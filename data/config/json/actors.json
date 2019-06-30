@@ -1,0 +1,86 @@
+[
+	{
+		"TILEX" : 3,
+		"TILEY" : 2,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 3,
+		"TILEY" : 9,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 9,
+		"TILEY" : 5,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 1,
+		"TILEY" : 2,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 5,
+		"TILEY" : 2,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 2,
+		"TILEY" : 2,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 0,
+		"TILEY" : 7,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 1,
+		"TILEY" : 4,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 2,
+		"TILEY" : 3,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 2,
+		"TILEY" : 8,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 3,
+		"TILEY" : 6,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	},
+	{
+		"TILEX" : 4,
+		"TILEY" : 7,
+		"DIMX" : 32,
+		"DIMY" : 32,
+		"RADIUS" : 16.0f
+	}
+]

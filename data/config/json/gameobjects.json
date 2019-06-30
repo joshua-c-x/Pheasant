@@ -1,0 +1,27 @@
+[
+	{
+		"LOCATION": "customerservice",
+		"NAME": "AOrders",
+		"DESCRIPTION" : "The morning's eCommerce orders.",
+		"X" : 0,
+		"Y" : 0,
+		"MAPANIMATION" : [ 0, 1, 2, 3, 4, 5 ]
+	},
+	{
+		"LOCATION": "customerservice",
+		"NAME": "Marker",
+	    "DESCRIPTION" : "A large marker, used for labeling boxes.",
+		"X" : 3,
+		"Y" : 2,
+		"MAPANIMATION" : [ 0, 1, 2, 3, 4, 5 ]
+	},
+	{
+		"LOCATION": "customerservice",
+		"NAME": "Poo",
+	    "DESCRIPTION" : "A poo.",
+		"X" : 1,
+		"Y" : 13,
+		"MAPANIMATION" : [ 0, 1, 2 ]
+	}
+]
+
