@@ -3,13 +3,13 @@ import def.*;
 import ecs.Entity;
 import eng.*;
 
-public class Actor
+public class Actor 
 {   
 	Entity _entity;
 	
 	public Actor(Entity entity)
 	{
-	  _entity = entity;
+		_entity = entity;
 	}
 
 	public Entity Entity() 

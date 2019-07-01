@@ -32,11 +32,6 @@ public class WorldRenderer
 		return;
 	}
 	
-	public boolean Render() 
-	{
-		return _render;
-	}
-	
 	public void InsertAnimation(Animation animation) 
 	{
 		_animations.add(animation);

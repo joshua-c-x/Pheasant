@@ -22,14 +22,10 @@ public class Application extends PApplet
 	{
 		size(800,600);
 		PROCESSING = this;
-		System.err.println(PROCESSING.sketchPath());
 	}
 
 	public void setup()
-	{
-	  frameRate(30);
-	  fill(0);
-	  
+	{ 
 	  font_ibmthin4_16 = createFont("fonts/ibmps2thin4.ttf", 16);
 	  font_atismall_8  = createFont("fonts/atismall.ttf", 8);
 	  
@@ -48,6 +44,12 @@ public class Application extends PApplet
 	{
 		ENGINE.Update();
 	}
+
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	/////////////[ Event Listening: Key or Char Pressed ]///////////
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
 	
 	@Override
 	public void keyPressed() 
@@ -71,19 +73,16 @@ public class Application extends PApplet
 	  }
 	  
 	  else if(key == ENTER || key == RETURN ) { keyPress = Parameters.Keys_Enter;     }
-	  else if(key == BACKSPACE )              { keyPress = Parameters.Keys_Backspace; }
-	  else if(key == DELETE )                 { keyPress = Parameters.Keys_Delete;    }  
+	  else if(key == BACKSPACE ) { keyPress = Parameters.Keys_Backspace; }
+	  else if(key == DELETE ) { keyPress = Parameters.Keys_Delete;    }  
 	  
 	  if (key == CODED) 
 	  {
-	    if (keyCode == UP)          { keyPress = Parameters.Keys_Up;    }
+	    if (keyCode == UP) { keyPress = Parameters.Keys_Up;    }
 	    else if (keyCode == DOWN  ) { keyPress = Parameters.Keys_Down;  }
 	    else if (keyCode == LEFT  ) { keyPress = Parameters.Keys_Left;  } 
 	    else if (keyCode == RIGHT ) { keyPress = Parameters.Keys_Right; }
-	    else if(keyCode == ALT || keyCode == CONTROL)                   
-	    { 
-	      keyPress = Parameters.Keys_Control;     
-	    }
+	    else if (keyCode == CONTROL) { keyPress = Parameters.Keys_Control; }
 	  }
 	  
 	  if(keyPress.equals(Parameters.UNDEFINED_STRING) == true) 
@@ -102,6 +101,13 @@ public class Application extends PApplet
 	  } 
 	}
 
+	
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	/////////////[ Event Listening: Key or Char Released ]//////////
+	////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////
+	
 	@Override
 	public void keyReleased() 
 	{    
@@ -124,12 +130,12 @@ public class Application extends PApplet
 	    key = 0; 
 	  }
 	  else if(key == ENTER || key == RETURN ) { keyPress = Parameters.Keys_Enter;     }
-	  else if(key == BACKSPACE )              { keyPress = Parameters.Keys_Backspace; }
-	  else if(key == DELETE )                 { keyPress = Parameters.Keys_Delete;    }  
+	  else if(key == BACKSPACE ) { keyPress = Parameters.Keys_Backspace; }
+	  else if(key == DELETE ) { keyPress = Parameters.Keys_Delete;    }  
 	  
 	  if (key == CODED) 
 	  {
-	    if (keyCode == UP)          { keyPress = Parameters.Keys_Up; }
+	    if (keyCode == UP) { keyPress = Parameters.Keys_Up; }
 	    else if (keyCode == DOWN  ) { keyPress = Parameters.Keys_Down; }
 	    else if (keyCode == LEFT  ) { keyPress = Parameters.Keys_Left; } 
 	    else if (keyCode == RIGHT ) { keyPress = Parameters.Keys_Right; }

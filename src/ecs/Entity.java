@@ -8,28 +8,24 @@ import res.Animation;
 import res.WorldRenderer;
 
 public class Entity 
-{	
-  private int     				_tileX, 
-  								_tileY, 
-  								_tilesX, 
-  								_tilesY, 
-  								_imageWidth, 
-  								_imageHeight, 
-  								_tag;
-  private float                 _radius;
-  private String                _location, _name;
-  private UUID    				_uuid;
+{
+  private int _tileX,_tileY,_tilesX,_tilesY,_imageWidth,_imageHeight,_tag;
+  private float _radius;
+  private boolean _render;
+  private String _location, _name;
+  private UUID _uuid;
   private ArrayList<IComponent> _components;
-  private WorldRenderer         _worldRenderer;
-   
+  private WorldRenderer _worldRenderer;
+  
   public Entity(int tag, String location, String name, boolean render) 
   {
 	_tag        = tag;
+	_render     = render;
 	_location   = location;
 	_name       = name;
 	_uuid       = UUID.randomUUID();  
 	_components = new ArrayList<IComponent>();
-	_worldRenderer = new WorldRenderer(render);
+	_worldRenderer = new WorldRenderer(_render);
   }
   
   public void SetDimensions(int tileX, int tileY, int tilesX, int tilesY, int imageWidth, int imageHeight, float radius) 
@@ -58,17 +54,17 @@ public class Entity
   {
 	  JSONObject json = new JSONObject();
 	  
-	  json.setInt("TAG",         this.Tag());
+	  json.setInt("TAG", this.Tag());
 	  json.setString("LOCATION", this.Location());
-	  json.setString("NAME", 	 this.Name());
-	  json.setInt("TILEX", 		 this.TileX());
-	  json.setInt("TILEY", 		 this.TileY());
-	  json.setInt("TILESX", 	 this.TilesX());
-	  json.setInt("TILESY", 	 this.TilesY());
-	  json.setInt("IMAGEWIDTH",  this.ImageWidth());
+	  json.setString("NAME", this.Name());
+	  json.setInt("TILEX", this.TileX());
+	  json.setInt("TILEY", this.TileY());
+	  json.setInt("TILESX", this.TilesX());
+	  json.setInt("TILESY", this.TilesY());
+	  json.setInt("IMAGEWIDTH", this.ImageWidth());
 	  json.setInt("IMAGEHEIGHT", this.ImageHeight());
-	  json.setFloat("RADIUS", 	 this.Radius());
-	  json.setBoolean("RENDER",  this.GetWorldRenderer().Render());
+	  json.setFloat("RADIUS", this.Radius());
+	  json.setBoolean("RENDER", this.Render());
 
 	  JSONArray componentsJSON = new JSONArray();
 	  JSONArray animationsJSON = new JSONArray();	
@@ -112,7 +108,7 @@ public class Entity
 	  _components.remove(component);
   }
   
-  public Entity GetEntity() 
+  public Entity GetSelfAsEntity() 
   {
 	  return this;
   }
@@ -134,7 +130,12 @@ public class Entity
   
   public float Radius() 
   {
-	return _radius;  
+	  return _radius;  
+  }
+  
+  public boolean Render() 
+  {
+	  return _render;
   }
   
   public int TileX() 
