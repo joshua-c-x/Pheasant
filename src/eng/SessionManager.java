@@ -9,11 +9,9 @@ public class SessionManager
   {
     _activeSession = new Session(userFile.UserName);
     
-    _activeSession.LoadGameObjectsFromJSON(userFile.GameObjectsJSONArray);
-    _activeSession.LoadActorsFromJSON(userFile.ActorsJSONArray);
     _activeSession.LoadMapsFromJSON(userFile.MapsJSONArray);
-    _activeSession.LoadPlayerFromJSON(userFile.PlayerJSONObject);
     _activeSession.LoadWorldFromJSON(userFile.WorldJSONObject);
+    _activeSession.LoadEntitiesFromJSON(userFile.EntitiesJSONArray);
   }
   public boolean ActiveSessionExists() 
   {

@@ -1,0 +1,122 @@
+[
+	{
+		"TAG" : 0,
+		"LOCATION": "customerservice",
+		"NAME": "player",
+		"TILEX" : 3,
+		"TILEY" : 3,
+		"TILESX" : 1,
+		"TILESY" : 1,
+		"IMAGEWIDTH" : 32,
+		"IMAGEHEIGHT" : 32,
+		"RADIUS" : 16.0f,
+		"RENDER" : true,
+		"ANIMATIONS" : 
+		[
+			{ 
+				"NAME" : "player_up",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			},
+			{ 
+				"NAME" : "player_down",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			},
+			{ 
+				"NAME" : "player_left",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			},
+			{ 
+				"NAME" : "player_right",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			}
+		],
+		"COMPONENTS" : 
+		[
+			{ 
+				"ID" : 0,
+				"DATA" : ""
+			}
+		]
+	},
+	{
+		"TAG" : 1,
+		"LOCATION": "customerservice",
+		"NAME": "marker",
+		"TILEX" : 4,
+		"TILEY" : 5,
+		"TILESX" : 1,
+		"TILESY" : 1,
+		"IMAGEWIDTH" : 32,
+		"IMAGEHEIGHT" : 32,
+		"RADIUS" : 16.0f,
+		"RENDER" : true,
+		"ANIMATIONS" : 
+		[
+			{ 
+				"NAME" : "marker_float",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			}
+		],
+		"COMPONENTS" : 
+		[
+			{ 
+				"ID" : 0,
+				"DATA" : ""
+			}
+		]
+	},
+	{
+		"TAG" : 1,
+		"LOCATION": "customerservice",
+		"NAME": "orders",
+		"TILEX" : 7,
+		"TILEY" : 2,
+		"TILESX" : 1,
+		"TILESY" : 1,
+		"IMAGEWIDTH" : 32,
+		"IMAGEHEIGHT" : 32,
+		"RADIUS" : 16.0f,
+		"RENDER" : true,
+		"ANIMATIONS" : 
+		[
+			{ 
+				"NAME" : "orders_float",
+				"FRAMES" : [ 0, 1, 2, 3, 4, 5 ] 
+			},
+		],
+		"COMPONENTS" : 
+		[
+			{ 
+				"ID" : 0,
+				"DATA" : ""
+			}
+		]
+	},
+	{
+		"TAG" : 1,
+		"LOCATION": "customerservice",
+		"NAME": "poo",
+		"TILEX" : 1,
+		"TILEY" : 9,
+		"TILESX" : 1,
+		"TILESY" : 1,
+		"IMAGEWIDTH" : 32,
+		"IMAGEHEIGHT" : 32,
+		"RADIUS" : 16.0f,
+		"RENDER" : true,
+		"ANIMATIONS" : 
+		[
+			{ 
+				"NAME" : "poo_stink",
+				"FRAMES" : [ 0, 1, 2 ] 
+			},
+		],
+		"COMPONENTS" : 
+		[
+			{ 
+				"ID" : 0,
+				"DATA" : ""
+			}
+		]
+	}
+]

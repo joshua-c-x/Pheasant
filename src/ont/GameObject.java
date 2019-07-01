@@ -1,32 +1,27 @@
 package ont;
 
+import java.util.ArrayList;
+
 import def.Application;
+import ecs.Entity;
 import eng.IO;
 import eng.Parameters;
 
 public class GameObject
 {
-  String _location, _description, _name;
-  int _x, _y;
-  int[] _frames;
+
+  Entity _entity;
   
-  public GameObject(String location, String description, String name, int x, int y, int[] frames)
+  public GameObject(Entity entity)
   {
-    _location    = location;
-    _description = description;
-    _name        = name;
-    _x           = x;
-    _y           = y;
-    _frames      = frames;
+	  _entity = entity;
   } 
   
-  public String Location()    { return _location; }
-  public String Description() { return _description; }
-  public String Name()        { return _name; }
-  public int X()              { return _x; }
-  public int Y()              { return _y; }
-  public int[] Frames()       { return _frames; }
-
+  public Entity Entity() 
+  {
+	  return _entity;
+  }
+  
   public void Draw() 
   {
     DrawDebug();
@@ -39,10 +34,14 @@ public class GameObject
   
   public void DrawDebug() 
   {
+	int x,y;
+	x = _entity.TileX();
+	y = _entity.TileY();
+	
 	Application.PROCESSING.noFill();
 	Application.PROCESSING.stroke(255,0,255,150);
-	Application.PROCESSING.rect( _x * Parameters.TileDimension , _y * Parameters.TileDimension, Parameters.TileDimension, Parameters.TileDimension);
+	Application.PROCESSING.rect( x * Parameters.TileDimension , y * Parameters.TileDimension, Parameters.TileDimension, Parameters.TileDimension);
 	Application.PROCESSING.fill(0);
-	Application.PROCESSING.text('g', _x * Parameters.TileDimension, ( _y * Parameters.TileDimension) + Parameters.TileDimension);
+	Application.PROCESSING.text('g', x * Parameters.TileDimension, ( y * Parameters.TileDimension) + Parameters.TileDimension);
   }
 }

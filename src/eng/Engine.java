@@ -61,7 +61,7 @@ public class Engine implements IMessaging
     _fileBlock = false;
     _timer     = Application.PROCESSING.millis();
     
-    String userName = "tssst";
+    String userName = "example_user";
        
     
     if(FileManager.CreateUserFiles(userName) == 1) 

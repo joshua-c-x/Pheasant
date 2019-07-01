@@ -10,11 +10,9 @@ public class FileManager
   /// This class uses a singleton pattern, see "Main.pde" for its initialization
   ///
   
-  public static final String FILENAME_GAMEOBJECTS = "gameobjects.json";
-  public static final String FILENAME_ACTORS      = "actors.json";
   public static final String FILENAME_MAPS        = "maps.json";
   public static final String FILENAME_WORLD       = "world.json";
-  public static final String FILENAME_PLAYER      = "player.json";
+  public static final String FILENAME_ENTITIES    = "entities.json";
    
   public static final String CONFIG_JSON_PATH     = "\\data\\config\\json\\";
   public static final String CONFIG_PATH          = "\\data\\config\\cfg.json";
@@ -98,11 +96,9 @@ public class FileManager
   {  
     return new String[] 
     {
-      USER_DATA_FILES + userName + "\\" + FILENAME_GAMEOBJECTS,
-      USER_DATA_FILES + userName + "\\" + FILENAME_ACTORS,
       USER_DATA_FILES + userName + "\\" + FILENAME_MAPS,
       USER_DATA_FILES + userName + "\\" + FILENAME_WORLD,
-      USER_DATA_FILES + userName + "\\" + FILENAME_PLAYER
+      USER_DATA_FILES + userName + "\\" + FILENAME_ENTITIES,
     };
   }
   
@@ -116,11 +112,9 @@ public class FileManager
   {
     return new String[] 
     {
-      FILENAME_GAMEOBJECTS,
-      FILENAME_ACTORS,
       FILENAME_MAPS,
       FILENAME_WORLD,
-      FILENAME_PLAYER
+      FILENAME_ENTITIES,
     };
   }
   
@@ -144,31 +138,23 @@ public class FileManager
     String[] paths = UserPaths(userName);
     String[] files = UserFiles();
     
-    JSONArray  objectsJSON = session.GetGameObjectsExportedAsJSON(); 
-    JSONArray  actorsJSON  = session.GetActorsExportedAsJSON();
+    JSONArray  entitiesJSON = session.GetEntitiesExportedAsJSON();
     JSONArray  mapsJSON    = session.GetMapsExportedAsJSON();
     JSONObject worldJSON   = session.GetWorldExportedAsJSON(); 
-    JSONObject playerJSON  = session.GetPlayerExportedAsJSON();
     
     for(int i = 0; i < paths.length; i += 1) 
     {     
       String path = paths[i]; 
       switch(files[i]) 
       {
-        case FILENAME_GAMEOBJECTS:
-        	Application.PROCESSING.saveJSONArray(objectsJSON, path);
-        break;
-        case FILENAME_ACTORS:
-        	Application.PROCESSING.saveJSONArray(actorsJSON,path);
-        break;
         case FILENAME_MAPS:
         	Application.PROCESSING.saveJSONArray(mapsJSON, path);
         break;
         case FILENAME_WORLD:
         	Application.PROCESSING.saveJSONObject(worldJSON, path);
         break;
-        case FILENAME_PLAYER:
-        	Application.PROCESSING.saveJSONObject(playerJSON, path);
+        case FILENAME_ENTITIES:
+        	Application.PROCESSING.saveJSONArray(entitiesJSON, path);
         break;
       }     
     }    
@@ -193,37 +179,29 @@ public class FileManager
     
     String[] paths = UserPaths(userName);
     String[] files = UserFiles();
-    
-    JSONArray objectsJSON = new JSONArray(); 
-    JSONArray actorsJSON  = new JSONArray();
+     
     JSONArray mapsJSON    = new JSONArray();
     JSONObject worldJSON  = new JSONObject();
-    JSONObject playerJSON = new JSONObject();
+    JSONArray entitiesJSON = new JSONArray();
       
     for(int i = 0; i < paths.length; i += 1) 
     {     
       String path = paths[i]; 
       switch(files[i]) 
       {
-        case FILENAME_GAMEOBJECTS:
-          objectsJSON = Application.PROCESSING.loadJSONArray(path);
-        break;
-        case FILENAME_ACTORS:
-          actorsJSON = Application.PROCESSING.loadJSONArray(path);
-        break;
         case FILENAME_MAPS:
           mapsJSON = Application.PROCESSING.loadJSONArray(path);
         break;
         case FILENAME_WORLD:
           worldJSON = Application.PROCESSING.loadJSONObject(path);
         break;
-        case FILENAME_PLAYER:
-          playerJSON = Application.PROCESSING.loadJSONObject(path);
+        case FILENAME_ENTITIES:
+          entitiesJSON = Application.PROCESSING.loadJSONArray(path);
         break;
       }     
     }
     
-    userFile = new UserFile(userName, objectsJSON, actorsJSON, mapsJSON, worldJSON, playerJSON);
+    userFile = new UserFile(userName, mapsJSON, worldJSON, entitiesJSON);
     
     return userFile;
   }
@@ -243,17 +221,14 @@ public class FileManager
     if(UserFolderExists(name) == false) 
     {
       success = 1;
-      JSONArray  gameObjects = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_GAMEOBJECTS);
-      JSONArray  actors      = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_ACTORS);
-      JSONArray  maps        = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH+ FILENAME_MAPS);
-      JSONObject world       = Application.PROCESSING.loadJSONObject(CONFIG_JSON_PATH + FILENAME_WORLD);
-      JSONObject player      = Application.PROCESSING.loadJSONObject(CONFIG_JSON_PATH + FILENAME_PLAYER);
+
+      JSONArray  maps    = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH+ FILENAME_MAPS);
+      JSONObject world   = Application.PROCESSING.loadJSONObject(CONFIG_JSON_PATH + FILENAME_WORLD);
+      JSONArray entities = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_ENTITIES);
     
-      Application.PROCESSING.saveJSONArray(gameObjects, USER_DATA_FILES + name + "\\" + FILENAME_GAMEOBJECTS);
-      Application.PROCESSING.saveJSONArray(actors,      USER_DATA_FILES + name + "\\" + FILENAME_ACTORS);
-      Application.PROCESSING.saveJSONArray(maps,        USER_DATA_FILES + name + "\\" + FILENAME_MAPS);
-      Application.PROCESSING.saveJSONObject(world,      USER_DATA_FILES + name + "\\" + FILENAME_WORLD);
-      Application.PROCESSING.saveJSONObject(player,     USER_DATA_FILES + name + "\\" + FILENAME_PLAYER);
+      Application.PROCESSING.saveJSONArray(maps,     USER_DATA_FILES + name + "\\"  + FILENAME_MAPS);
+      Application.PROCESSING.saveJSONObject(world,   USER_DATA_FILES + name + "\\"  + FILENAME_WORLD);
+      Application.PROCESSING.saveJSONArray(entities, USER_DATA_FILES + name + "\\" + FILENAME_ENTITIES);
       
       AddUserToConfigFile(name);
     }

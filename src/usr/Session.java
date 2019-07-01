@@ -1,11 +1,14 @@
 package usr;
 import java.util.ArrayList;
 
+import ecs.Entity;
+import ecs.IComponent;
 import eng.IO;
 import eng.Parameters;
 import ont.*;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
+import res.Animation;
 
 public class Session 
 {
@@ -46,23 +49,6 @@ public class Session
     return _currentUserName;
   }
  
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
-  ////////////    Get Player Exported As JSON    /////////////
-  ////////////__________________________________//////////////
-  ////////////////////////////////////////////////////////////
-  
-  public JSONObject GetPlayerExportedAsJSON() 
-  {
-    JSONObject playerJSON = new JSONObject();
-    playerJSON.setInt("TILEX",_world.Player().TileX());
-    playerJSON.setInt("TILEY",_world.Player().TileY());
-    playerJSON.setInt("DIMX",_world.Player().DimensionX());
-    playerJSON.setInt("DIMY",_world.Player().DimensionY());
-    playerJSON.setFloat("RADIUS",_world.Player().Radius());
-    
-    return playerJSON;
-  }
   
   ////////////////////////////////////////////////////////////
   ////////////----------------------------------//////////////
@@ -75,65 +61,8 @@ public class Session
     JSONObject worldJSON = new JSONObject();
     worldJSON.setString("TEMP",_world.Temp);
     return worldJSON;
-  }
-  
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
-  ////////////Get Game Objects Exported As JSON //////////////
-  ////////////__________________________________//////////////
-  ////////////////////////////////////////////////////////////
-  
-  public JSONArray GetGameObjectsExportedAsJSON() 
-  {
-    JSONArray jsonArray = new JSONArray();
-    ArrayList<GameObject> gameObjects = _world.GameObjects();  
-    for(int i = 0; i < gameObjects.size(); i += 1) 
-    {
-      GameObject obj = gameObjects.get(i);
-      JSONObject gameObjectJSON = new JSONObject();   
-      gameObjectJSON.setString("LOCATION", obj.Location());
-      gameObjectJSON.setString("DESCRIPTION", obj.Description());
-      gameObjectJSON.setString("NAME", obj.Name());
-      gameObjectJSON.setInt("X", obj.X());
-      gameObjectJSON.setInt("Y", obj.Y());  
-      JSONArray array = new JSONArray();    
-      int[] frames = obj.Frames();   
-      for(int j = 0; j < frames.length; j += 1) 
-      {
-        array.setInt(j,frames[j]);      
-      }  
-      gameObjectJSON.setJSONArray("MAPANIMATION",array);   
-      jsonArray.append(gameObjectJSON);
-    }
-    return jsonArray;
-  }
+  }  
 
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
-  ////////////    Get Actors Exported As JSON   //////////////
-  ////////////__________________________________//////////////
-  ////////////////////////////////////////////////////////////
-  
-  public JSONArray GetActorsExportedAsJSON()
-  {
-    JSONArray jsonArray = new JSONArray();
-    ArrayList<Actor> actors = _world.Actors();    
-    for(int i = 0; i < actors.size(); i += 1) 
-    {
-      Actor actor = actors.get(i);
-      JSONObject actorJSON = new JSONObject();
-
-      actorJSON.setInt("TILEX", actor.TileX());
-      actorJSON.setInt("TILEY", actor.TileY());
-      actorJSON.setInt("DIMX", actor.DimensionX());
-      actorJSON.setInt("DIMY", actor.DimensionY());
-      actorJSON.setFloat("RADIUS", actor.Radius());
-      
-      jsonArray.append(actorJSON);
-    }
-    return jsonArray;
-  }
-  
   ////////////////////////////////////////////////////////////
   ////////////----------------------------------//////////////
   ////////////    Get Maps Exported As JSON     //////////////
@@ -167,6 +96,36 @@ public class Session
     }
     return mapArray;
   }
+  
+  ////////////////////////////////////////////////////////////
+  ////////////----------------------------------//////////////
+  ////////////Get Entities Exported As JSON //////////////
+  ////////////__________________________________//////////////
+  ////////////////////////////////////////////////////////////
+  
+  public JSONArray GetEntitiesExportedAsJSON() 
+  {
+    JSONArray entitiesJSONArray = new JSONArray();
+    
+    // game objects
+    for(GameObject obj : _world.GameObjects()) 
+    {
+    	JSONObject jsonEntity = obj.Entity().ToJSON();
+    	entitiesJSONArray.append(jsonEntity);
+    }	
+    
+    // actors
+    for(Actor actor : _world.Actors()) 
+    {
+    	JSONObject jsonEntity = actor.Entity().ToJSON();
+    	entitiesJSONArray.append(jsonEntity);
+    }
+    
+    // player
+	entitiesJSONArray.append(_world.Player().Entity().ToJSON());
+	
+    return entitiesJSONArray;
+  }
 
   ////////////////////////////////////////////////////////////
   ////////////----------------------------------//////////////
@@ -182,119 +141,120 @@ public class Session
   
   ////////////////////////////////////////////////////////////
   ////////////----------------------------------//////////////
-  ////////////Load Player Locally From JSON,    //////////////
-  ////////////send to _world                    //////////////
-  ////////////////////////////////////////////////////////////
-  
-  public void LoadPlayerFromJSON(JSONObject playerJSON) 
-  {
-    int tilex,tiley,dimx,dimy;
-    float radius;
-    
-    tilex  = playerJSON.getInt("TILEX");
-    tiley  = playerJSON.getInt("TILEY");
-    dimx   = playerJSON.getInt("DIMX");
-    dimy   = playerJSON.getInt("DIMY");
-    radius = playerJSON.getFloat("RADIUS");
-    
-    Player player = new Player(tilex, tiley, dimx, dimy, radius);
-    
-    _world.SetPlayer(player);
-  }
-
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
-  ////////////Load Actors Locally From JSON,    //////////////
-  ////////////send to _world                    //////////////
-  ////////////////////////////////////////////////////////////
-  
-  public void LoadActorsFromJSON(JSONArray actorsJSON) 
-  {
-    for(int i = 0; i < actorsJSON.size(); i += 1) 
-    {
-      JSONObject actorJSON = actorsJSON.getJSONObject(i);
-      
-      int tilex,tiley,dimx,dimy;
-      float radius;
-    
-      tilex  = actorJSON.getInt("TILEX");
-      tiley  = actorJSON.getInt("TILEY");
-      dimx   = actorJSON.getInt("DIMX");
-      dimy   = actorJSON.getInt("DIMY");
-      radius = actorJSON.getFloat("RADIUS");
-      
-      Actor actor = new Actor( tilex, tiley, dimx, dimy, radius );
-      
-      _world.AddActor(actor);
-    }
-  }
-  
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
   ////////////Load Maps Locally From JSON,      //////////////
   ////////////send to _world                    //////////////
   ////////////////////////////////////////////////////////////
   
   public void LoadMapsFromJSON(JSONArray mapsJSON) 
   {
-    for(int i = 0; i < mapsJSON.size(); i += 1) 
-    {
-      JSONObject json = mapsJSON.getJSONObject(i);
-      String location;
-      int[] collisionsBuffer;
-      
-      location = json.getString("LOCATION");
-      
-      JSONArray array = json.getJSONArray("COLLISIONS");
-      collisionsBuffer = array.getIntArray();
-      
-      int[][] collisions = new int[Parameters.MapY][];
-      int offset;
-      
-      for(int y = 0; y < Parameters.MapY; y += 1) 
-      {
-        collisions[y] = new int[Parameters.MapX];  
-        for(int x = 0; x < Parameters.MapX; x += 1) 
-        {
-          offset = y * Parameters.MapX;
-          collisions[y][x] = collisionsBuffer[offset + x];
-        }
-      }
-      Map map = new Map(collisions, location);
-      
-      _world.AddMap(map);
-    }
-  }
+	  for(int i = 0; i < mapsJSON.size(); i += 1) 
+	  {
+		  JSONObject json = mapsJSON.getJSONObject(i);
+		  String location;
+		  int[] collisionsBuffer;
+			  
+		  location = json.getString("LOCATION");
+			  
+		  JSONArray array = json.getJSONArray("COLLISIONS");
+		  collisionsBuffer = array.getIntArray();
+		
+		  int[][] collisions = new int[Parameters.MapY][];
+		  int offset;
+			  
+		  for(int y = 0; y < Parameters.MapY; y += 1) 
+		  {
+			  collisions[y] = new int[Parameters.MapX];  
+			  for(int x = 0; x < Parameters.MapX; x += 1) 
+			  {
+				  offset = y * Parameters.MapX;
+				  collisions[y][x] = collisionsBuffer[offset + x];
+			  }
+		  }
+		  
+		  Map map = new Map(collisions, location);
+		  
+		  _world.AddMap(map);
+		}
+	}
   
-  ////////////////////////////////////////////////////////////
-  ////////////------------------------------------////////////
-  ////////////Load GameObjects Locally From JSON, ////////////
-  ////////////send to _world                      ////////////
-  ////////////////////////////////////////////////////////////
-  
-  public void LoadGameObjectsFromJSON(JSONArray gameObjectsJSON) 
-  {
-    for(int i = 0; i < gameObjectsJSON.size(); i += 1) 
-    {
-      JSONObject json = gameObjectsJSON.getJSONObject(i);
-      String location, description, name;
-      int x,y;
-      int[] frames;
-      
-      location = json.getString("LOCATION");
-      description = json.getString("DESCRIPTION");
-      name = json.getString("NAME");
-      x = json.getInt("X");
-      y = json.getInt("Y");
-      
-      JSONArray array = json.getJSONArray("MAPANIMATION");
-      frames = array.getIntArray();
-       
-      GameObject obj = new GameObject(location,description,name,x,y,frames);
-      
-      _world.AddGameObject(obj);
-    }
-  }
+  	////////////////////////////////////////////////////////////
+  	////////////------------------------------------////////////
+  	////////////Load Entities from User JSON file.  ////////////
+  	////////////send to _world                      ////////////
+  	////////////////////////////////////////////////////////////
+
+	public void LoadEntitiesFromJSON(JSONArray entities) 
+	{
+		for(int i = 0; i < entities.size(); i += 1) 
+		{
+			JSONObject json = entities.getJSONObject(i);
+			
+			String location, name;
+			int tag, tileX, tileY, tilesX, tilesY, imageWidth, imageHeight;
+			float radius;
+			boolean render;
+		
+			tag         = json.getInt("TAG");
+			location    = json.getString("LOCATION");
+			name        = json.getString("NAME");
+			tileX       = json.getInt("TILEX");
+			tileY       = json.getInt("TILEY");
+			tilesX      = json.getInt("TILESX");
+			tilesY      = json.getInt("TILESY");
+			imageWidth  = json.getInt("IMAGEWIDTH");
+			imageHeight = json.getInt("IMAGEHEIGHT");
+			radius      = json.getFloat("RADIUS");
+			render      = json.getBoolean("RENDER");
+			
+			Entity e = new Entity(tag, location, name, render);
+			e.SetDimensions(tileX, tileY, tilesX, tilesY, imageWidth, imageHeight, radius);
+			
+			int j;
+			
+			JSONArray animations = json.getJSONArray("ANIMATIONS");			
+			for( j = 0; j < animations.size(); j += 1) 
+			{
+				String animationName;
+				int numFrames;
+				int[] animationFrames;
+				
+				JSONObject jsonAnimation = animations.getJSONObject(j);
+				JSONArray jsonArray = jsonAnimation.getJSONArray("FRAMES");
+				numFrames = jsonArray.size();
+				animationName = jsonAnimation.getString("NAME");
+				animationFrames = new int[numFrames];
+				
+				for(int f = 0; f < numFrames; f += 1) 
+				{
+					animationFrames[f] = jsonArray.getInt(f);
+				}
+				
+				Animation animation = new Animation(animationName, animationFrames);
+				
+				e.AddAnimation(animation);
+			}
+			
+			JSONArray components = json.getJSONArray("COMPONENTS");
+			for( j = 0; j < components.size(); j += 1) 
+			{
+				JSONObject jsonComponent = components.getJSONObject(j);
+				// todo parse jsonComponent?
+			}
+			
+			switch(e.Tag()) 
+			{
+				case 0:
+					_world.SetPlayer(e);
+					break;
+				case 1:
+					_world.AddGameObject(e);
+					break;
+				case 2:
+					_world.AddActor(e);
+					break;
+			}
+		}
+	}
 }
 
 

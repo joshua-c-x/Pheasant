@@ -1,58 +1,41 @@
 package res;
 
 import def.Application;
+import eng.Assets;
 import processing.core.PImage;
 
-class Animation 
+public class Animation 
 {
-  private PImage[] _images;
-  
-  int[] Frames;
-  int Index, AnimationLength;
-  float Timer, FrameDelay; 
-  
-  Animation(PImage[] images,int[] frames) 
-  {
-    _images = images;
-    
-    Frames = frames;
-    Index = 0;
-    
-    AnimationLength = Frames.length;
-    
-    // by default, each frame lasts a quarter of a second / 250 millis
-    Timer = Application.PROCESSING.millis();
-    FrameDelay = 180.0f;
-  }
-  
-  void SetDuration(float duration) 
-  {
-    Timer = Application.PROCESSING.millis();
-    FrameDelay = AnimationLength / duration;
-  }
-  
-  void Update() 
-  {
-    if(Application.PROCESSING.millis() - Timer > FrameDelay) 
-    {
-      Timer = Application.PROCESSING.millis();
-      Index += 1;
-      Index = Index < AnimationLength ? Index : 0; 
-    }
-  }
-  
-  void Play (float X, float Y) 
-  {
-	  Application.PROCESSING.image(_images[Frames[Index]], X, Y);
-  }
-  
-  void PlayFrameZero(float X, float Y) 
-  {
-	  Application.PROCESSING.image(_images[Frames[0]], X, Y);
-  }
-  
-  void SetIndex (int index) 
-  {
-    Index = index;
-  } 
+	String  _name;
+	int[]   _frames;
+	int     _index;
+	
+	public Animation (String name, int[] frames) 
+	{
+		_name = name;
+		_frames = frames;
+		_index = 0;
+	}
+	
+	public String Name() 
+	{
+		return _name;
+	}
+	
+	public int[] Frames() 
+	{
+		return _frames;
+	}
+	
+	public void Step() 
+	{
+		_index += 1;
+		_index = _index < _frames.length ? _index : 0;
+	}
+	
+	public void Draw(float x, float y) 
+	{
+		PImage[] imageCache = Assets.Images.get(_name);
+		Application.PROCESSING.image(imageCache[_frames[_index]], x, y);
+	}
 }

@@ -4,25 +4,29 @@ import java.util.HashMap;
 import def.Application;
 
 public class Assets 
-{
-  ///
-  /// This class uses a singleton pattern, see "Main.pde" for its initialization
-  ///
+{  
+  public static final String Animations_Paths_Player = "player\\";
+  public static final String Animations_Player_Up    = "player_up";
+  public static final String Animations_Player_Down  = "player_down";
+  public static final String Animations_Player_Left  = "player_left";
+  public static final String Animations_Player_Right = "player_right";
+  public static final String Animations_Player_Poo   = "player_poo";
   
-  public static final String Assets_Images_Player      = "player";
-  public static final String Assets_Images_Poo         = "poo";
-  public static final String Assets_Images_Orders      = "orders";
-  public static final String Assets_Images_Marker      = "marker";
+  public static final String Animations_Paths_Poo     = "poo\\";
+  public static final String Animations_Poo_Stink     = "poo_stink";
+  
+  public static final String Animations_Paths_Marker  = "marker\\";
+  public static final String Animations_Marker_Float  = "marker_float";
+  
+  public static final String Animations_Paths_Orders  = "orders\\";
+  public static final String Animations_Orders_Float  = "orders_float";
   
   public static final String GRAPHICS_PATH_ACTORS      = "\\data\\graphics\\actors\\";
   public static final String GRAPHICS_PATH_GAMEOBJECTS = "\\data\\graphics\\objs\\";
   
   public static HashMap<String, PImage[]> Images; 
   
-  private static PImage[] _playerImages;
-  private static PImage[] _poopImages;
-  private static PImage[] _orderImages;
-  private static PImage[] _markerImages;
+  private static PImage[] _buffer;
    
   private Assets() {}
   
@@ -39,32 +43,41 @@ public class Assets
     ////////.                    ./////////////////
     ////////.--------------------./////////////////
     ///////////////////////////////////////////////   
-    _playerImages = new PImage[13];
+  
    
     ////////////[ Forward ]////////////////////////
-    _playerImages[0]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_forward.png");
-    _playerImages[1]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_forward_walk_a.png");
-    _playerImages[2]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_forward_walk_b.png");
-    
-    ////////////[ Backward ]///////////////////////
-    _playerImages[3]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_backward.png");
-    _playerImages[4]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_backward_walk_a.png");
-    _playerImages[5]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_backward_walk_b.png");
-    
-    ////////////[ Right ]//////////////////////////
-    _playerImages[6]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_right.png");
-    _playerImages[7]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_right_walk_a.png");
-    _playerImages[8]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_right_walk_b.png");
-    
-    ////////////[ Left ]///////////////////////////
-    _playerImages[9]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_left.png");
-    _playerImages[10] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_left_walk_a.png");
-    _playerImages[11] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_left_walk_b.png");
-    
-    ////////////[ Poo ]////////////////////////////
-    _playerImages[12] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Assets_Images_Player + "\\player_poo.png");
-    
-    Images.put(Assets_Images_Player, _playerImages);
+    _buffer = new PImage[3];
+    _buffer[0]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Up + "\\player_forward.png");
+    _buffer[1]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Up + "\\player_forward_walk_a.png");
+    _buffer[2]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Up + "\\player_forward_walk_b.png");   
+    Images.put(Animations_Player_Up, _buffer);                            
+                                                                          
+    ////////////[ Backward ]///////////////////////                       
+    _buffer = new PImage[3];                                              
+    _buffer[0]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Down + "\\player_backward.png");
+    _buffer[1]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Down + "\\player_backward_walk_a.png");
+    _buffer[2]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Down + "\\player_backward_walk_b.png");
+    Images.put(Animations_Player_Down, _buffer);                         
+                                                                         
+    ////////////[ Right ]//////////////////////////                      
+    _buffer = new PImage[3];                                             
+    _buffer[0]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Right + "\\player_right.png");
+    _buffer[1]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Right + "\\player_right_walk_a.png");
+    _buffer[2]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Right + "\\player_right_walk_b.png");
+    Images.put(Animations_Player_Right, _buffer);                        
+                                                                         
+    ////////////[ Left ]///////////////////////////                      
+    _buffer = new PImage[3];                                             
+    _buffer[0]  = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Left + "\\player_left.png");
+    _buffer[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS  + Animations_Paths_Player + Animations_Player_Left + "\\player_left_walk_a.png");
+    _buffer[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS  + Animations_Paths_Player + Animations_Player_Left + "\\player_left_walk_b.png");
+    Images.put(Animations_Player_Left, _buffer);                          
+                                                                          
+    ////////////[ Poo ]////////////////////////////                       
+    _buffer = new PImage[1];                                              
+    _buffer[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_ACTORS + Animations_Paths_Player + Animations_Player_Poo + "\\player_poo.png");
+                                                                         
+    Images.put(Animations_Player_Poo, _buffer);
     
     
     ///////////////////////////////////////////////
@@ -76,14 +89,14 @@ public class Assets
     ////////.                    ./////////////////
     ////////.--------------------./////////////////
     ///////////////////////////////////////////////    
-    _poopImages = new PImage[3];
+    _buffer = new PImage[3];
     
     ////////////[ Map Animation ]//////////////////
-    _poopImages[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Poo + "\\poo_0.png");
-    _poopImages[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Poo + "\\poo_1.png");
-    _poopImages[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Poo + "\\poo_2.png");
+    _buffer [0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Poo + Animations_Poo_Stink + "\\poo_0.png");
+    _buffer [1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Poo + Animations_Poo_Stink + "\\poo_1.png");
+    _buffer [2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Poo + Animations_Poo_Stink + "\\poo_2.png");
 
-    Images.put( Assets_Images_Poo, _poopImages );
+    Images.put( Animations_Poo_Stink, _buffer );
     
     ///////////////////////////////////////////////
     ///////////////////////////////////////////////
@@ -94,17 +107,17 @@ public class Assets
     ////////.                    ./////////////////
     ////////.--------------------./////////////////
     ///////////////////////////////////////////////    
-    _orderImages = new PImage[6];
+    _buffer = new PImage[6];
     
     ////////////[ Map Animation ]//////////////////
-    _orderImages[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-0.png");
-    _orderImages[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-1.png");
-    _orderImages[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-2.png");
-    _orderImages[3] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-3.png");
-    _orderImages[4] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-4.png");
-    _orderImages[5] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Orders + "\\orders-5.png");
+    _buffer[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-0.png");
+    _buffer[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-1.png");
+    _buffer[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-2.png");
+    _buffer[3] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-3.png");
+    _buffer[4] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-4.png");
+    _buffer[5] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Orders + Animations_Orders_Float + "\\orders-5.png");
  
-    Images.put( Assets_Images_Orders, _orderImages );
+    Images.put( Animations_Orders_Float, _buffer);
     
     ///////////////////////////////////////////////
     ///////////////////////////////////////////////
@@ -115,16 +128,16 @@ public class Assets
     ////////.                    ./////////////////
     ////////.--------------------./////////////////
     ///////////////////////////////////////////////    
-    _markerImages = new PImage[6];
+    _buffer = new PImage[6];
     
     ////////////[ Map Animation ]//////////////////
-    _markerImages[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker +"\\marker (1).png");
-    _markerImages[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker +"\\marker (2).png");
-    _markerImages[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker +"\\marker (3).png");
-    _markerImages[3] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker +"\\marker (4).png");
-    _markerImages[4] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker +"\\marker (5).png");
-    _markerImages[5] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Assets_Images_Marker + "\\marker (6).png");                 
+    _buffer[0] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (1).png");
+    _buffer[1] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (2).png");
+    _buffer[2] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (3).png");
+    _buffer[3] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (4).png");
+    _buffer[4] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (5).png");
+    _buffer[5] = Application.PROCESSING.loadImage(GRAPHICS_PATH_GAMEOBJECTS + Animations_Paths_Marker + Animations_Marker_Float + "\\marker (6).png");                 
     
-    Images.put( Assets_Images_Marker, _markerImages );
+    Images.put( Animations_Marker_Float, _buffer );
   }
 }

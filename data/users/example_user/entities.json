@@ -1,0 +1,134 @@
+[
+  {
+    "LOCATION": "customerservice",
+    "TILEX": 4,
+    "RENDER": true,
+    "COMPONENTS": [],
+    "TILEY": 5,
+    "TILESY": 1,
+    "TILESX": 1,
+    "ANIMATIONS": [{
+      "FRAMES": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "NAME": "marker_float"
+    }],
+    "NAME": "marker",
+    "IMAGEWIDTH": 32,
+    "RADIUS": 16,
+    "IMAGEHEIGHT": 32,
+    "TAG": 1
+  },
+  {
+    "LOCATION": "customerservice",
+    "TILEX": 7,
+    "RENDER": true,
+    "COMPONENTS": [],
+    "TILEY": 2,
+    "TILESY": 1,
+    "TILESX": 1,
+    "ANIMATIONS": [{
+      "FRAMES": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "NAME": "orders_float"
+    }],
+    "NAME": "orders",
+    "IMAGEWIDTH": 32,
+    "RADIUS": 16,
+    "IMAGEHEIGHT": 32,
+    "TAG": 1
+  },
+  {
+    "LOCATION": "customerservice",
+    "TILEX": 1,
+    "RENDER": true,
+    "COMPONENTS": [],
+    "TILEY": 9,
+    "TILESY": 1,
+    "TILESX": 1,
+    "ANIMATIONS": [{
+      "FRAMES": [
+        0,
+        1,
+        2
+      ],
+      "NAME": "poo_stink"
+    }],
+    "NAME": "poo",
+    "IMAGEWIDTH": 32,
+    "RADIUS": 16,
+    "IMAGEHEIGHT": 32,
+    "TAG": 1
+  },
+  {
+    "LOCATION": "customerservice",
+    "TILEX": 7,
+    "RENDER": true,
+    "COMPONENTS": [],
+    "TILEY": 10,
+    "TILESY": 1,
+    "TILESX": 1,
+    "ANIMATIONS": [
+      {
+        "FRAMES": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "NAME": "player_up"
+      },
+      {
+        "FRAMES": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "NAME": "player_down"
+      },
+      {
+        "FRAMES": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "NAME": "player_left"
+      },
+      {
+        "FRAMES": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "NAME": "player_right"
+      }
+    ],
+    "NAME": "player",
+    "IMAGEWIDTH": 32,
+    "RADIUS": 16,
+    "IMAGEHEIGHT": 32,
+    "TAG": 0
+  }
+]

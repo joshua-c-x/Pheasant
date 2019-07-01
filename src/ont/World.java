@@ -2,6 +2,7 @@ package ont;
 
 import java.util.ArrayList;
 
+import ecs.Entity;
 import eng.IO;
 
 public class World 
@@ -45,24 +46,24 @@ public class World
     Temp = temp;
   }
   
-  public void SetPlayer(Player player) 
-  {
-    _player = player;
-  }
-  
   public void AddMap(Map map) 
   {
     _maps.add(map);
   }
   
-  public void AddActor(Actor actor) 
+  public void SetPlayer(Entity e) 
   {
-    _actors.add(actor);
+    _player = new Player(e);
   }
   
-  public void AddGameObject(GameObject obj) 
+  public void AddActor(Entity e) 
   {
-    _gameObjects.add(obj);
+    _actors.add(new Actor(e));
+  }
+  
+  public void AddGameObject(Entity e) 
+  {	  
+    _gameObjects.add(new GameObject(e));
   }
   
   public void Update(IO io, float delta) 

@@ -1,4 +1,0 @@
-package ecs;
-class Component 
-{
-}
