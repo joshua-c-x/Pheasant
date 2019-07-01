@@ -9,7 +9,7 @@ import res.WorldRenderer;
 
 public class Entity 
 {
-  private int _tileX,_tileY,_tilesX,_tilesY,_imageWidth,_imageHeight,_tag;
+  private int _tag, _tileX, _tileY, _tilesX, _tilesY, _imageWidth, _imageHeight;
   private float _radius;
   private boolean _render;
   private String _location, _name;
