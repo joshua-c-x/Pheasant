@@ -1,25 +1,20 @@
 package eng;
-import java.util.LinkedList;
 import processing.core.PApplet;
 import def.Application;
 import msg.*;
 import usr.*;
 
-public class Engine implements IMessaging
+public class Engine
 {     
-  private float _timer, _delta;
-  
+  private float _timer, _delta;  
   private boolean _initialized, _fileBlock;
-  
   IO _io;
-  
-  SessionManager _sessionManager;
   
   public Engine() 
   {
     _initialized = false; 
   }
-
+  
   public void Update() 
   {
     Application.PROCESSING.background(255);
@@ -34,22 +29,21 @@ public class Engine implements IMessaging
       return;
     }
     
-    if(_sessionManager.ActiveSessionExists()) 
-    {    
+    if(SessionManager.ActiveSessionExists()) 
+    {          
       IO io = new IO(_io);
       
       _delta = PApplet.abs(Application.PROCESSING.millis() - _timer);
       _timer = Application.PROCESSING.millis();
       
-      _sessionManager.ActiveSession().Update(io,_delta);
+      SessionManager.ActiveSession.Update(io,_delta);
       
       // gc
       io = null;
       
       if(_io.KeysJustPressed.get("CONTROL") == true) 
       {
-        FileManager.WriteSessionToJSON(_sessionManager.ActiveSession());
-        _sessionManager.Close();
+        FileManager.WriteSessionToFile(SessionManager.ActiveSession);
         System.err.println("game saved.");
       }
     }
@@ -73,10 +67,9 @@ public class Engine implements IMessaging
     	System.err.println("failed to create new user.");
     }
     
-    UserFile userFile = FileManager.ReadSessionFiles(userName);
+    Session session = FileManager.ReadSessionFromFile(userName);
     
-    _sessionManager = new SessionManager();
-    _sessionManager.LoadSessionFromUserFile(userFile);
+    SessionManager.LoadSession(session);
     
     _initialized = true;
   }
@@ -102,7 +95,7 @@ public class Engine implements IMessaging
     
     if(_io.CharacterJustReleased(ioc)) { Application.println(ioc + " was just released."); }
     //*******************************************************************************************
-    
+   
     // *********this code is for unit testing the responsiveness of each key input **************
     String iok = _io.GetLastKeyPressed();
     
@@ -112,24 +105,6 @@ public class Engine implements IMessaging
     
     if(_io.KeyJustReleased(iok)) { PApplet.println(iok + " was just released."); }
     // ******************************************************************************************
-  }
-
-  public void ReadMessage(Message message) 
-  {
-  }
-  
-  public LinkedList<Message> GetMessages() 
-  {
-    return new LinkedList<Message>();
-  }
-  
-  public void SaveSession() 
-  {
-    if(_sessionManager.ActiveSessionExists())
-    {     
-    	FileManager.WriteSessionToJSON(_sessionManager.ActiveSession());
-      _sessionManager.Close();
-    }
   }
 }
 

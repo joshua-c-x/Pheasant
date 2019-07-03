@@ -12,6 +12,7 @@ public class Application extends PApplet
 	public static FileManager FILEMANAGER;
 	public static Assets ASSETS;
 	public static Engine ENGINE;
+	public static String PATH;
 	
 	public static void main(String[] args) 
 	{
@@ -22,6 +23,7 @@ public class Application extends PApplet
 	{
 		size(800,600);
 		PROCESSING = this;
+		PATH = this.sketchPath();
 	}
 
 	public void setup()
@@ -33,7 +35,7 @@ public class Application extends PApplet
 	  imageMode(CORNER);
 	  ellipseMode(CORNER);
 	  
-	  Assets.LoadImages();
+	  Assets.LoadSprites();
 	  
 	  ENGINE = new Engine();
 	  ENGINE.Initialize();

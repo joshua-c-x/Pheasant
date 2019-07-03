@@ -1,0 +1,46 @@
+potpourri narritive game/structure
+
+an old man will slowly turn all the adults in the town into his cult; this happens over a period of 24 hours (realtime) and 1 year (gametime) (four seasons?)
+
+during that time, the player is responsible for seeking 'knowledge points'. topics of conversation, events witnessed, or item added into inventory. -> hints generated, new situations become visible.
+
+every one of the 12 kids has to cooperate with their unique powers to prevent the townspeople from doing horrible things.
+
+powers
+
+david:
+first to unlock
+psi - kinesis
+
+lou-ellen
+speaks with ghosts
+
+brock
+heavy-hitter, can speak to birds
+
+madona
+high blood, dexterity, can summon a spirit sword
+
+cameron
+super raise on charisma, courage, electric attacks
+
+sylvia
+uses poisons, highest charisma in game, is a theologian, has a guardian angel
+
+Hideki
+uses fire
+
+magdalene
+can dispel and issue curses
+
+abigail
+is friends with a giant psychic moth, plays a flute that can put people to sleep
+
+dustin
+can heal wounds & diseases, become invisible
+
+joey
+infinite courage, high blood, can transform into a cursed totem
+
+alyosha
+has a slingshot, high trust, cannot be cursed, can use one of three selected miracles, last to unlock

@@ -1,9 +1,7 @@
 package eng;
 
-public class Parameters 
-{	
-	private Parameters() {}
-	
+public final class Parameters 
+{		
 	/////////////////////////////////////////////
 	//////// For local fields   /////////////////
 	/////////////////////////////////////////////
@@ -81,5 +79,14 @@ public class Parameters
 	public static final int TileDimension = 32;
 	public static final int MapX          = 20;
 	public static final int MapY          = 15;	
+	
+	/////////////////////////////////////////////
+	////// Entity Tags                    ///////
+	/////////////////////////////////////////////
+	/////////////////////////////////////////////
+	
+	public static final int Tag_Player     = 1;
+	public static final int Tag_GameObject = 2;
+	public static final int Tag_Actor      = 3;
 	
 }
