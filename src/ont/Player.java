@@ -1,66 +1,51 @@
 package ont;
 
-import components.WorldPosition;
+import components.Position;
+import components.Sprite;
 import def.Application;
 import ecs.Components;
 import ecs.EntityContainer;
-import ecs.IEntity;
+import eng.Assets;
 import eng.IO;
 import eng.Parameters;
+import res.SpriteSheet;
 
-public class Player extends Actor implements IEntity
+public class Player extends Actor
 {	
-  public Player(int entity, EntityContainer entityContainer) 
-  {
-	  super(entity, entityContainer);
-  }
+	  public Player(int entity, EntityContainer entityContainer) 
+	  {
+		  super(entity, entityContainer);
+	  }
+	  
+	  public void Update(IO io, float delta) 
+	  {
+		  Position p = GetComponent(Components.Position);
+		  
+		  if(io.KeysJustPressed.get(Parameters.Keys_Up)) 
+		  {
+			  p.TileY -= 1;
+		  }
+		  if(io.KeysJustPressed.get(Parameters.Keys_Down)) 
+		  {
+			  p.TileY += 1;
+		  }
+		  if(io.KeysJustPressed.get(Parameters.Keys_Left)) 
+		  {
+			  p.TileX -= 1;
+		  }
+		  if(io.KeysJustPressed.get(Parameters.Keys_Right)) 
+		  {
+			  p.TileX += 1;
+		  }
+		  DrawDebug();
+	  }
   
-  public void Update(IO io, float delta) 
-  {
-  int entity = this.Entity();
-  
-  if(_entityContainer.HasComponent(entity, Components.WorldPosition)) 
-  {	
-	  WorldPosition wp = (WorldPosition)_entityContainer.GetComponent(entity, Components.WorldPosition);
+	  public void DrawDebug() 
+	  { 		 		
+		  Position p = GetComponent(Components.Position);
+		  Sprite s = GetComponent(Components.Sprite);
+	
 
-	  if(io.KeysJustPressed.get(Parameters.Keys_Up)) 
-	  {
-		  wp.TileY -= 1;
+		 // sprite.Play(p.TileX * Parameters.TileDimension, p.TileY * Parameters.TileDimension);
 	  }
-	  if(io.KeysJustPressed.get(Parameters.Keys_Down)) 
-	  {
-		  wp.TileY += 1;
-	  }
-	  if(io.KeysJustPressed.get(Parameters.Keys_Left)) 
-	  {
-		  wp.TileX -= 1;
-	  }
-	  if(io.KeysJustPressed.get(Parameters.Keys_Right)) 
-	  {
-		  wp.TileX += 1;
-	  }
-  }
-  
-  DrawDebug();
-}
-  
-  	public void DrawDebug() 
-  	{
-  		int x,y,entity;
-  		
-  		entity = this.Entity();
-  		
-  		if(_entityContainer.HasComponent(entity, Components.WorldPosition)) 
-  		{
-  			WorldPosition wp = (WorldPosition)_entityContainer.GetComponent(entity, Components.WorldPosition);
-  			x = wp.TileX;
-  			y = wp.TileY;
-  			Application.PROCESSING.noFill();
-  			Application.PROCESSING.stroke(255,0,255,150);
-  			Application.PROCESSING.rect( x * Parameters.TileDimension , y * Parameters.TileDimension, Parameters.TileDimension, Parameters.TileDimension);
-  			Application.PROCESSING.fill(0);
-  			Application.PROCESSING.text('p', x * Parameters.TileDimension, ( y * Parameters.TileDimension) + Parameters.TileDimension);
-  		}
-
-  	}
 }

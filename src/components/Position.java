@@ -3,13 +3,13 @@ package components;
 import ecs.Components;
 import processing.data.JSONObject;
 
-public class WorldPosition extends Components 
+public class Position extends Components 
 {
 	public int TileX, TileY;
 	
-	public WorldPosition() 
+	public Position() 
 	{
-		super(Components.WorldPosition);
+		super(Components.Position);
 	}
 	
 	@Override
@@ -21,7 +21,8 @@ public class WorldPosition extends Components
 		data.setInt("X", TileX);
 		data.setInt("Y", TileY);
 		
-		json.setLong("ID", ID());
+		json.setString("NAME", Components.Name_Position);
+		json.setLong(Components.ComponentIDKey, ComponentID());
 		json.setJSONObject("DATA", data);
 		
 		return json;

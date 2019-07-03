@@ -1,13 +1,17 @@
 
 package eng;
 import processing.core.*;
-import res.Sprite;
+import res.Animation;
+import res.AnimationLibrary;
+import res.SpriteSheet;
 
 import java.util.HashMap;
 import def.Application;
 
 public class Assets 
-{  
+{ 
+  private static float Player_Walk_Speed = 700.0f;
+  
   /////////////////////////////////////////////
   ////// Sprite IDs                     ///////
   /////////////////////////////////////////////
@@ -23,27 +27,31 @@ public class Assets
   /////////////////////////////////////////////
   /////////////////////////////////////////////
   
-  public static final String Animations_Idle      = "idle";
-  public static final String Animations_WalkUp    = "walkup";
-  public static final String Animations_WalkDown  = "walkdown";
-  public static final String Animations_WalkLeft  = "walkleft";
-  public static final String Animations_WalkRight = "walkright";
+  public static final String AnimationName_Idle      = "idle";
+  public static final String AnimationName_WalkUp    = "walkup";
+  public static final String AnimationName_WalkDown  = "walkdown";
+  public static final String AnimationName_WalkLeft  = "walkleft";
+  public static final String AnimationName_WalkRight = "walkright";
   
   public static final String SpriteSheet_Player_Path    = "\\data\\graphics\\actors\\player\\player_spritesheet.png";
   public static final int SpriteSheet_Player_Columns = 4;
   public static final int SpriteSheet_Player_Rows    = 3;
   
-  public static HashMap<Integer, Sprite> Sprites; 
+  public static HashMap<Integer, SpriteSheet> SpriteSheets; 
+  public static HashMap<Integer, AnimationLibrary> AnimationLibraries;
   
-  private static Sprite _spriteBuffer;
   private static PImage _imageBuffer;
-   
+  private static SpriteSheet _spriteSheetBuffer;
+  private static AnimationLibrary _animationLibraryBuffer;
+  private static Animation[] _animationsBuffer;
+  
   private Assets() {}
   
   public static void LoadSprites() 
   {
-    Sprites = new HashMap<Integer,Sprite>();
-     
+    SpriteSheets = new HashMap<Integer, SpriteSheet>();
+    AnimationLibraries = new HashMap<Integer, AnimationLibrary>();
+    
     ///////////////////////////////////////////////
     ////////.--------------------./////////////////
     ////////.   Player Sprite    ./////////////////
@@ -51,16 +59,21 @@ public class Assets
     ///////////////////////////////////////////////   
  
     _imageBuffer = Application.PROCESSING.loadImage(SpriteSheet_Player_Path);
-    _spriteBuffer = new Sprite(SpriteSheet_Player_Columns, SpriteSheet_Player_Rows, _imageBuffer);
+    _spriteSheetBuffer = new SpriteSheet(_imageBuffer, SpriteSheet_Player_Columns, SpriteSheet_Player_Rows);
     
-    _spriteBuffer.AddAnimation(Animations_Idle,      new int[] { 0 });
-    _spriteBuffer.AddAnimation(Animations_WalkUp,    new int[] { 1, 4, 1, 5 });
-    _spriteBuffer.AddAnimation(Animations_WalkDown,  new int[] { 0, 6, 0, 7 });
-    _spriteBuffer.AddAnimation(Animations_WalkLeft,  new int[] { 2, 8, 2, 9 });
-    _spriteBuffer.AddAnimation(Animations_WalkRight, new int[] { 3, 10, 3, 11 });
+    _animationsBuffer = new Animation[]
+    {
+    		new Animation(AnimationName_Idle, new int[]{ 0 }, 5000),
+    		new Animation(AnimationName_WalkUp, new int[] { 1, 4, 1, 5  }, Player_Walk_Speed),
+    		new Animation(AnimationName_WalkDown, new int[] { 0, 6, 0, 7 }, Player_Walk_Speed),
+    		new Animation(AnimationName_WalkLeft, new int[] { 2, 8, 2, 9 }, Player_Walk_Speed),
+    		new Animation(AnimationName_WalkRight, new int[] { 3, 10, 3, 11 }, Player_Walk_Speed),
+    };                 
+   
+    _animationLibraryBuffer = new AnimationLibrary(_animationsBuffer);
     
-    Sprites.put(SpriteID_Player, _spriteBuffer);
-    
+    SpriteSheets.put(SpriteID_Player, _spriteSheetBuffer);
+    AnimationLibraries.put(SpriteID_Player, _animationLibraryBuffer);
   }
 }
 

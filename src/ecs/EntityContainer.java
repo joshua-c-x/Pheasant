@@ -16,8 +16,8 @@ public class EntityContainer {
 
     // All Components	
     public Tag[] Tags;
-    public WorldPosition[] WorldPositions;
-    public SpriteID[] SpriteIDs;
+    public Position[] WorldPositions;
+    public Sprite[] SpriteIDs;
 
     public EntityContainer() 
     {
@@ -27,11 +27,11 @@ public class EntityContainer {
         _uniqueIDs = new UUID[e];
 
         Tags = new Tag[e];
-        WorldPositions = new WorldPosition[e];
-        SpriteIDs = new SpriteID[e];
+        WorldPositions = new Position[e];
+        SpriteIDs = new Sprite[e];
     }
 
-    public long[] GetAllEntityFlags() 
+    public long[] Flags() 
     {
         return _flags;
     }
@@ -47,12 +47,13 @@ public class EntityContainer {
             JSONArray components = jsonEntity.getJSONArray("COMPONENTS");
 
             // set empty flag
-            long flag = Components.Empty;
+            long flag = 0;
 
             // create flag by bitwise OR |= every component id found onto flag
-            for (int j = 0; j < components.size(); j += 1) {
+            for (int j = 0; j < components.size(); j += 1) 
+            {
                 JSONObject jsonComponent = components.getJSONObject(j);
-                flag |= jsonComponent.getLong("ID");
+                flag |= jsonComponent.getLong(Components.ComponentIDKey);
             }
 
             // using flag, create entity
@@ -60,13 +61,14 @@ public class EntityContainer {
 
             // for every jsonComponent in components,
             // if its component ID matches with a ComponentID,
-            // run build the object with FromJSONdd
+            // run build the object with FromJSON
 
-            for (int j = 0; j < components.size(); j += 1) {
+            for (int j = 0; j < components.size(); j += 1) 
+            {
                 JSONObject jsonComponent = components.getJSONObject(j);
                 JSONObject data = jsonComponent.getJSONObject("DATA");
 
-                long componentID = jsonComponent.getLong("ID");
+                long componentID = jsonComponent.getLong(Components.ComponentIDKey);
                 BuildEntityFromJSONData(entity, componentID, data);
             }
         }
@@ -84,8 +86,8 @@ public class EntityContainer {
             long flag = _flags[i];
 
             if ((flag & Components.Tag) > 0) jsonComponents.append(Tags[i].ToJSON());
-            if ((flag & Components.WorldPosition) > 0) jsonComponents.append(WorldPositions[i].ToJSON());
-            if ((flag & Components.SpriteID) > 0) jsonComponents.append(SpriteIDs[i].ToJSON());
+            if ((flag & Components.Position) > 0) jsonComponents.append(WorldPositions[i].ToJSON());
+            if ((flag & Components.Sprite) > 0) jsonComponents.append(SpriteIDs[i].ToJSON());
 
             jsonEntity.setJSONArray("COMPONENTS", jsonComponents);
 
@@ -112,11 +114,11 @@ public class EntityContainer {
         {
             c = Tags[entity];
         }
-        else if ((flag & Components.WorldPosition) > 0) 
+        else if ((flag & Components.Position) > 0) 
         {
             c = WorldPositions[entity];
         }
-        else if ((flag & Components.SpriteID) > 0) 
+        else if ((flag & Components.Sprite) > 0) 
         {
             c = SpriteIDs[entity];
         }
@@ -135,13 +137,13 @@ public class EntityContainer {
         {
             Tags[next] = new Tag();
         }
-        if ((flag & Components.WorldPosition) > 0)
+        if ((flag & Components.Position) > 0)
         {
-            WorldPositions[next] = new WorldPosition();
+            WorldPositions[next] = new Position();
         }
-        if ((flag & Components.SpriteID) > 0) 
+        if ((flag & Components.Sprite) > 0) 
         {
-            SpriteIDs[next] = new SpriteID();
+            SpriteIDs[next] = new Sprite();
         }
 
         return next;
@@ -153,10 +155,10 @@ public class EntityContainer {
         if ((componentID & Components.Tag) > 0) 
         {
             Tags[entity].FromJSON(data);
-        } else if ((componentID & Components.WorldPosition) > 0) 
+        } else if ((componentID & Components.Position) > 0) 
         {
             WorldPositions[entity].FromJSON(data);
-        } else if ((componentID & Components.SpriteID) > 0) 
+        } else if ((componentID & Components.Sprite) > 0) 
         {
             SpriteIDs[entity].FromJSON(data);
         }
@@ -212,7 +214,7 @@ public class EntityContainer {
 
         // 1. WorldPositions
 
-        WorldPosition[] tempWorldPositions = new WorldPosition[next];
+        Position[] tempWorldPositions = new Position[next];
 
         for (i = 0; i < WorldPositions.length; i += 1) {
             tempWorldPositions[i] = WorldPositions[i];
@@ -222,7 +224,7 @@ public class EntityContainer {
 
         // 2. SpriteIDs
 
-        SpriteID[] tempSpriteIDs = new SpriteID[next];
+        Sprite[] tempSpriteIDs = new Sprite[next];
 
         for (i = 0; i < SpriteIDs.length; i += 1) {
             tempSpriteIDs[i] = SpriteIDs[i];

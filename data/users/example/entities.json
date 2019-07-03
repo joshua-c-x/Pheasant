@@ -1,0 +1,20 @@
+[{"COMPONENTS": [
+  {
+    "CIDL": 1,
+    "DATA": {"TYPE": "PLAYER"},
+    "NAME": "TAG"
+  },
+  {
+    "CIDL": 2,
+    "DATA": {
+      "X": 0,
+      "Y": 0
+    },
+    "NAME": "POSITION"
+  },
+  {
+    "CIDL": 8,
+    "DATA": {"SPRITEID": 1},
+    "NAME": "SPRITE"
+  }
+]}]

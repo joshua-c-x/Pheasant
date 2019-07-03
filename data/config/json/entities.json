@@ -2,22 +2,22 @@
   {
     "COMPONENTS": [
       {
-        "ID": 1,
+        "CIDL": 1,
         "DATA": {
-          "VALUE": 1
+          "TYPE": "PLAYER"
         }
       },
       {
-        "ID": 2,
+        "CIDL": 2,
         "DATA": {
           "X": 2,
           "Y": 4
         }
       },
       {
-        "ID": 4,
+        "CIDL": 8,
         "DATA": {
-          "VALUE": 1
+          "SPRITEID": 1
         }
       }
     ]

@@ -6,11 +6,16 @@ import processing.data.JSONObject;
 
 public class Tag extends Components
 {
-	public int Value;
+	public String _type;
 	
 	public Tag() 
 	{
 		super(Components.Tag);
+	}
+	
+	public String Type() 
+	{
+		return _type;
 	}
 	
 	@Override
@@ -19,9 +24,10 @@ public class Tag extends Components
 		JSONObject json = new JSONObject();
 		JSONObject data = new JSONObject();
 		
-		data.setInt("VALUE", Value);
+		data.setString("TYPE", _type);
 		
-		json.setLong("ID", ID());
+		json.setString("NAME", Components.Name_Tag);
+		json.setLong(Components.ComponentIDKey, ComponentID());
 		json.setJSONObject("DATA", data);
 		
 		return json;
@@ -30,6 +36,6 @@ public class Tag extends Components
 	@Override
 	public void FromJSON(JSONObject data) 
 	{
-		Value = data.getInt("VALUE");
+		_type = data.getString("TYPE");
 	}	
 }

@@ -1,7 +1,3 @@
 package ecs;
 
-
-public class Systems 
-{
-
-}
+public class Systems {}

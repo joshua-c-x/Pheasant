@@ -1,19 +1,20 @@
 package ecs;
-
 import processing.data.JSONObject;
 
 public abstract class Components 
-{
-	// 0 = no components
+{	
+	public final static String ComponentIDKey = "CIDL";
 	
-	public final static long 
-							 Empty         = 0,
-				             Tag           = 1 << 0,
-							 WorldPosition = 1 << 1,
-							 SpriteID      = 1 << 2,
-							 Player        = 1 << 3,
-							 GameObject    = 1 << 4,
-							 Actor         = 1 << 5;
+	public final static long Tag           = 1 << 0, // 1
+							 Position      = 1 << 1, // 2 
+							 Controller    = 1 << 2, // 4
+	 				         Sprite        = 1 << 3; // 8
+	
+	public final static String Name_Tag        = "TAG",
+							   Name_Position   = "POSITION",
+							   Name_Controller = "CONTROLLER",
+							   Name_Sprite     = "SPRITE";
+	
 	private final long _id;
 	
 	public Components(long id) 
@@ -21,8 +22,7 @@ public abstract class Components
 		_id = id;
 	}
 	
-	
-	public long ID() 
+	public long ComponentID() 
 	{
 		return _id;
 	}

@@ -55,7 +55,7 @@ public class Engine
     _fileBlock = false;
     _timer     = Application.PROCESSING.millis();
     
-    String userName = "example_user";
+    String userName = "example";
        
     
     if(FileManager.CreateUserFiles(userName) == 1) 

@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import components.Tag;
 import ecs.Components;
 import ecs.EntityContainer;
+import ecs.Systems;
 import eng.IO;
 import eng.Parameters;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
+import systems.SpriteSystem;
 
 public class World 
 {
   private EntityContainer _entities;
+  private SpriteSystem _spriteSystem;
   private Player _player;
   private ArrayList<GameObject> _gameObjects;
   private ArrayList<Actor> _actors;
@@ -21,10 +24,16 @@ public class World
   
   public World() 
   {
-	_entities    = new EntityContainer();
-    _gameObjects = new ArrayList<GameObject>();
-    _actors      = new ArrayList<Actor>();
-	_maps        = new ArrayList<Map>();
+	// Systems
+	_spriteSystem = new SpriteSystem();
+	
+	// Entitys
+	_entities     = new EntityContainer();
+    _gameObjects  = new ArrayList<GameObject>();
+    _actors       = new ArrayList<Actor>();
+	
+    // Maps
+    _maps         = new ArrayList<Map>();
   }
   
   
@@ -32,6 +41,8 @@ public class World
   {
 	  _player.Update(io, delta);
 
+	  _spriteSystem.Update(_entities, this, io, delta);
+	  
 	  //    for(Actor actor : _actors) 
 	  //    {
 	  //      actor.Update(io, delta);
@@ -43,7 +54,7 @@ public class World
 	  //    }
   } 
   
-
+  
 	////////////////////////////////////////////////////////////
 	////////////------------------------------------////////////
 	////////////Load Entities from User JSON file.  ////////////
@@ -56,7 +67,7 @@ public class World
 		_entities.LoadEntitiesFromJSON(jsonArray);
 	
 		// get all entity flags
-		long[] entityFlags = _entities.GetAllEntityFlags();
+		long[] entityFlags = _entities.Flags();
 	
 		for(int entity = 0; entity < entityFlags.length; entity += 1) 
 		{
@@ -67,16 +78,18 @@ public class World
 			{
 				Tag tag = (Tag)_entities.GetComponent(entity, Components.Tag);
 				
-				if((tag.Value & Parameters.Tag_Player) > 0) 
+				String type = tag.Type();
+				
+				if(type.equals(Parameters.TagType_Player)) 
 				{
 					_player = new Player(entity, _entities);
 				}
-				else if((tag.Value & Parameters.Tag_GameObject) > 0) 
+				else if(type.equals(Parameters.TagType_GameObject)) 
 				{
 					GameObject gameObject = new GameObject(entity, _entities);
 					_gameObjects.add(gameObject);
 				}
-				else if((tag.Value & Parameters.Tag_Actor) > 0) 
+				else if(type.equals(Parameters.TagType_Actor)) 
 				{
 					Actor actor = new Actor(entity, _entities);
 					_actors.add(actor);
