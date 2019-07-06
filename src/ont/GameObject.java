@@ -1,9 +1,9 @@
 package ont;
 import components.*;
 import ecs.*;
-import eng.Assets;
 import eng.IO;
-import res.SpriteSheet;
+import vis.Assets;
+import vis.SpriteSheet;
 
 public class GameObject extends Ontic
 {

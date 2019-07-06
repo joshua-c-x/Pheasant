@@ -1,4 +1,4 @@
-package res;
+package vis;
 
 import java.util.HashMap;
 

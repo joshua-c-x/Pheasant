@@ -1,6 +1,7 @@
 package def;
 import processing.core.PApplet;
 import processing.core.PFont;
+import vis.Assets;
 import eng.*;
 import msg.IOMessage;
 
@@ -23,7 +24,8 @@ public class Application extends PApplet
 	{
 		size(800,600);
 		PROCESSING = this;
-		PATH = this.sketchPath();
+		PathFinder.LoadPaths();
+		PATH = System.getProperty("user.dir");
 	}
 
 	public void setup()

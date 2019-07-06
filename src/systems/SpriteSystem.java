@@ -6,15 +6,15 @@ import def.Application;
 import ecs.Components;
 import ecs.EntityContainer;
 import ecs.Systems;
-import eng.Assets;
 import eng.Engine;
 import eng.IO;
 import eng.Parameters;
 import ont.World;
 import processing.data.IntList;
-import res.Animation;
-import res.AnimationLibrary;
-import res.SpriteSheet;
+import vis.Animation;
+import vis.AnimationLibrary;
+import vis.Assets;
+import vis.SpriteSheet;
 
 public class SpriteSystem extends Systems
 {

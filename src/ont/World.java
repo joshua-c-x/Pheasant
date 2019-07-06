@@ -2,6 +2,8 @@ package ont;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import components.Tag;
 import ecs.Components;
 import ecs.EntityContainer;
@@ -61,10 +63,10 @@ public class World
 	////////////send to _world                      ////////////
 	////////////////////////////////////////////////////////////
 	
-	public void LoadEntitiesFromJSONArray(JSONArray jsonArray) 
+	public void LoadEntityContainer(JsonNode entityContainerNode) 
 	{
 		// build EntityContainer on world object
-		_entities.LoadEntitiesFromJSON(jsonArray);
+		_entities.LoadEntityContainerJsonNode(entityContainerNode);
 	
 		// get all entity flags
 		long[] entityFlags = _entities.Flags();
@@ -78,7 +80,7 @@ public class World
 			{
 				Tag tag = (Tag)_entities.GetComponent(entity, Components.Tag);
 				
-				String type = tag.Type();
+				String type = tag.Type;
 				
 				if(type.equals(Parameters.TagType_Player)) 
 				{
@@ -175,8 +177,8 @@ public class World
 	  ////////////__________________________________//////////////
 	  ////////////////////////////////////////////////////////////
 	  
-	  public JSONArray GetEntitiesToJSONArray() 
+	  public JsonNode GetEntityContainerJsonNode() 
 	  {
-		  return _entities.ExportEntitiesToJSON();
+		  return _entities.ExportEntityContainerJsonNode();
 	  }
 }

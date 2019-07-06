@@ -5,10 +5,10 @@ import components.Sprite;
 import def.Application;
 import ecs.Components;
 import ecs.EntityContainer;
-import eng.Assets;
 import eng.IO;
 import eng.Parameters;
-import res.SpriteSheet;
+import vis.Assets;
+import vis.SpriteSheet;
 
 public class Player extends Actor
 {	

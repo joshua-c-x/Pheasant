@@ -1,5 +1,7 @@
 package usr;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import eng.IO;
 import ont.*;
 import processing.data.JSONArray;
@@ -9,13 +11,13 @@ public class Session
   private String _currentUserName;
   private World  _world;
   
-  public Session(String userName, JSONArray maps, JSONArray entities) 
+  public Session(String userName, JSONArray maps, JsonNode entityContainerJsonNode) 
   {
      _currentUserName = userName;
-     _world = new World();
      
+     _world = new World();     
      _world.LoadMapsFromJSONArray(maps);
-     _world.LoadEntitiesFromJSONArray(entities);
+     _world.LoadEntityContainer(entityContainerJsonNode);
   }
   
   ////////////////////////////////////////////////////////////
@@ -52,9 +54,9 @@ public class Session
   ////////////__________________________________//////////////
   ////////////////////////////////////////////////////////////
   
-  public JSONArray EntitiesToJSONArray() 
+  public JsonNode EntitiesToJSONArray() 
   {
-    return _world.GetEntitiesToJSONArray();
+    return _world.GetEntityContainerJsonNode();
   }
   
 }

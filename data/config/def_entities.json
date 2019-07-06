@@ -1,0 +1,35 @@
+{
+	"entityData" :
+	[
+	  {
+		"components": 
+		[
+		  {
+			"componentID": 1,
+			"componentName" : "TAG",
+			"componentData": 
+			{
+			  "type": "player"
+			}
+		  },
+		  {
+			"componentID": 2,
+			"componentName" : "POSITION",
+			"componentData": 
+			{
+			  "tileX": 2,
+			  "tileY": 4
+			}
+		  },
+		  {
+			"componentID": 8,
+			"componentName" : "SPRITE",
+			"componentData": 
+			{
+			  "spriteID": 1
+			}
+		  }
+		]
+	  }
+	]
+}

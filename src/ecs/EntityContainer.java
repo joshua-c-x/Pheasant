@@ -1,8 +1,15 @@
 package ecs;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import components.*;
+import eng.Engine;
+import eng.FileManager;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
@@ -36,65 +43,61 @@ public class EntityContainer {
         return _flags;
     }
 
-    public void LoadEntitiesFromJSON(JSONArray jsonArray)
+    public void LoadEntityContainerJsonNode(JsonNode entityNodes)
     {
-        for (int i = 0; i < jsonArray.size(); i += 1) 
-        {
-            // pull one json entity from JSONArray
-            JSONObject jsonEntity = jsonArray.getJSONObject(i);
-
-            // get components from json entity
-            JSONArray components = jsonEntity.getJSONArray("COMPONENTS");
-
-            // set empty flag
+    	if(entityNodes == null || entityNodes.isMissingNode()) 
+    	{
+    		Engine.ErrorAndHalt("entity json node is missing!");
+    	}
+    	
+        for (JsonNode entityNode : entityNodes) 
+        {     
             long flag = 0;
-
+            
+            ArrayNode arrayComponents = (ArrayNode)entityNode.path("components");
+            
             // create flag by bitwise OR |= every component id found onto flag
-            for (int j = 0; j < components.size(); j += 1) 
+            
+            if (arrayComponents.isArray()) 
             {
-                JSONObject jsonComponent = components.getJSONObject(j);
-                flag |= jsonComponent.getLong(Components.ComponentIDKey);
-            }
-
-            // using flag, create entity
-            int entity = CreateEntity(flag);
-
-            // for every jsonComponent in components,
-            // if its component ID matches with a ComponentID,
-            // run build the object with FromJSON
-
-            for (int j = 0; j < components.size(); j += 1) 
-            {
-                JSONObject jsonComponent = components.getJSONObject(j);
-                JSONObject data = jsonComponent.getJSONObject("DATA");
-
-                long componentID = jsonComponent.getLong(Components.ComponentIDKey);
-                BuildEntityFromJSONData(entity, componentID, data);
+                for (final JsonNode componentNode : arrayComponents) 
+                {
+                    long componentFlag = componentNode.path("componentID").asLong();
+                    flag |= componentFlag;
+                }
+                
+                int entity = CreateEntity(flag);
+                
+                for (final JsonNode componentNode : arrayComponents) 
+                {
+                    AddComponentToEntity(entity, componentNode);
+                }
             }
         }
     }
-    // System.err.println
-    public JSONArray ExportEntitiesToJSON() 
+
+    public JsonNode ExportEntityContainerJsonNode() 
     {
-        JSONArray jsonArray = new JSONArray();
-
-
-        for (int i = 0; i < _flags.length; i += 1) {
-            JSONObject jsonEntity = new JSONObject();
-            JSONArray jsonComponents = new JSONArray();
-
+        ObjectNode entityContainerNode = FileManager.ObjMapper.createObjectNode();
+       
+        entityContainerNode.putArray("entities");
+        
+        for (int i = 0; i < _flags.length; i += 1) 
+        {
+            ObjectNode entity = FileManager.ObjMapper.createObjectNode();
+            
+            entity.putArray("components");
+            
             long flag = _flags[i];
 
-            if ((flag & Components.Tag) > 0) jsonComponents.append(Tags[i].ToJSON());
-            if ((flag & Components.Position) > 0) jsonComponents.append(WorldPositions[i].ToJSON());
-            if ((flag & Components.Sprite) > 0) jsonComponents.append(SpriteIDs[i].ToJSON());
-
-            jsonEntity.setJSONArray("COMPONENTS", jsonComponents);
-
-            jsonArray.append(jsonEntity);
+            if ((flag & Components.Tag) > 0) entity.withArray("components").add(Tags[i].ToJsonNode());
+            if ((flag & Components.Position) > 0) entity.withArray("components").add(WorldPositions[i].ToJsonNode());
+            if ((flag & Components.Sprite) > 0) entity.withArray("components").add(SpriteIDs[i].ToJsonNode());
+            
+            entityContainerNode.withArray("entities").add(entity);
         }
 
-        return jsonArray;
+        return entityContainerNode;
     }
 
     public Boolean HasComponent(int entity, long componentID)
@@ -149,18 +152,21 @@ public class EntityContainer {
         return next;
     }
 
-    private void BuildEntityFromJSONData(int entity, long componentID, JSONObject data) 
+    private void AddComponentToEntity(int entity, JsonNode componentNode) 
     {
-        // component data is transferred from file to Entities object
+    	long componentID = componentNode.path("componentID").asLong();
+    	
         if ((componentID & Components.Tag) > 0) 
         {
-            Tags[entity].FromJSON(data);
-        } else if ((componentID & Components.Position) > 0) 
+            Tags[entity].FromJsonNode(componentNode);
+        } 
+        else if ((componentID & Components.Position) > 0) 
         {
-            WorldPositions[entity].FromJSON(data);
-        } else if ((componentID & Components.Sprite) > 0) 
+            WorldPositions[entity].FromJsonNode(componentNode);
+        } 
+        else if ((componentID & Components.Sprite) > 0) 
         {
-            SpriteIDs[entity].FromJSON(data);
+            SpriteIDs[entity].FromJsonNode(componentNode);
         }
     }
 

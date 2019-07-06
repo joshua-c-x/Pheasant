@@ -4,6 +4,7 @@ public class Map
   String _location;
   int[][] _collisions;
   
+  
   public Map(int[][] collisions, String location) 
   {
     _collisions = collisions;

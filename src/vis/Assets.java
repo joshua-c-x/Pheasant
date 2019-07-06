@@ -1,9 +1,6 @@
 
-package eng;
+package vis;
 import processing.core.*;
-import res.Animation;
-import res.AnimationLibrary;
-import res.SpriteSheet;
 
 import java.util.HashMap;
 import def.Application;

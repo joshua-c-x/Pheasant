@@ -1,0 +1,36 @@
+{
+	"uuidString":"",
+	"entities":
+	[
+		{
+			"components":
+			[
+				{
+					"componentID": 1,
+					"componentName" : "tag",
+					"componentData": 
+					{
+						"type": "player"
+					}
+				},
+				{
+					"componentID": 2,
+					"componentName" : "position",
+					"componentData": 
+					{
+						"tileX": 2,
+						"tileY": 4
+				}
+				},
+				{
+					"componentID": 8,
+					"componentName" : "sprite",
+					"componentData": 
+					{
+						"spriteID": 1
+					}
+				}
+			]
+		}
+	]
+}

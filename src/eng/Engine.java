@@ -1,5 +1,15 @@
 package eng;
 import processing.core.PApplet;
+
+import java.io.File;
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 import def.Application;
 import msg.*;
 import usr.*;
@@ -10,6 +20,7 @@ public class Engine
   private boolean _initialized, _fileBlock;
   IO _io;
   
+
   public Engine() 
   {
     _initialized = false; 
@@ -49,29 +60,87 @@ public class Engine
     }
   }
   
+  public void WriteDefaults() 
+  {	
+	  String json = "[]";
+	  JsonNode jsonNode = null;
+	  
+	  try 
+	  {
+		jsonNode = FileManager.ObjMapper.readTree(json);
+	  } 
+	  catch (IOException a) 
+	  {
+		a.printStackTrace();
+	  }
+	  
+		try 
+		{
+			FileManager.ObjWriter.writeValue(PathFinder.FILE_USERS.toFile(), json);
+		} 
+		catch (JsonGenerationException b) 
+		{
+			b.printStackTrace();
+		} 
+		catch (JsonMappingException c) 
+		{
+			c.printStackTrace();
+		} 
+		catch (IOException d) 
+		{
+			d.printStackTrace();
+		}
+		
+		try 
+		{
+			FileManager.ObjWriter.writeValue(PathFinder.FILE_MEMORIES.toFile(), json);
+		} 
+		catch (JsonGenerationException b) 
+		{
+			b.printStackTrace();
+		} 
+		catch (JsonMappingException c) 
+		{
+			c.printStackTrace();
+		} 
+		catch (IOException d) 
+		{
+			d.printStackTrace();
+		}
+  }
+  
   public void Initialize() 
   {
     _io        = new IO();
     _fileBlock = false;
     _timer     = Application.PROCESSING.millis();
     
-    String userName = "example";
-       
+    FileManager.InitializeFileManager();
     
-    if(FileManager.CreateUserFiles(userName) == 1) 
-    {
-    	System.err.println("successfully created new user.");
+    WriteDefaults();
+    
+    String userName = "luke";
+    long timeCreated = FileManager.Time.getTime();
+    FileManager.AddNewUserToUsersFile(userName, timeCreated);
+    
+    if(true) 
+    {     
+    	Application.PROCESSING.exit();
     }
-    else 
-    {
-    	System.err.println("failed to create new user.");
-    }
-    
-    Session session = FileManager.ReadSessionFromFile(userName);
-    
-    SessionManager.LoadSession(session);
-    
-    _initialized = true;
+//    if(FileManager.CreateUserFiles(userName) == 1) 
+//    {
+//    	System.err.println("successfully created new user.");
+//    }
+//    else 
+//    {
+//    	System.err.println("failed to create new user.");
+//    }
+//    
+//    Session session = FileManager.ReadSessionFromFile(userName);
+//    
+//    SessionManager.LoadSession(session);
+//    
+//    _initialized = true;
   }
   
   public boolean IsInitialized() 
@@ -82,6 +151,12 @@ public class Engine
   public void SendIO(IOMessage ioMessage) 
   {
     _io.BufferIOMessage(ioMessage);
+  }
+  
+  public static void ErrorAndHalt(String error) 
+  {
+	  System.err.println(error);
+	  Application.PROCESSING.exit();
   }
   
   private void SendInputToConsole() 

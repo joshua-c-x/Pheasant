@@ -1,12 +1,15 @@
 package components;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import ecs.Components;
+import eng.Engine;
+import eng.FileManager;
 import processing.data.JSONObject;
 
 public class Sprite extends Components
-{
-	private static final String SpriteIDKey = "SPRITEID".toUpperCase();
-	
+{	
 	public int SpriteID;
 	public int Index;
 	public float SuperDuration;
@@ -14,30 +17,24 @@ public class Sprite extends Components
 	
 	public Sprite() 
 	{
-		super(Components.Sprite);
+		super(Components.Sprite, "sprite");
 	}
 	
 	@Override
-	public JSONObject ToJSON() 
+	public JsonNode ToJsonNode() 
 	{
-		JSONObject json = new JSONObject();
-		JSONObject data = new JSONObject();
+		ObjectNode node = FileManager.ObjMapper.createObjectNode();
 		
-		data.setInt(SpriteIDKey, SpriteID);
-		
-		json.setString("NAME", Components.Name_Sprite);
-		json.setLong(Components.ComponentIDKey, ComponentID());
-		json.setJSONObject("DATA", data);
-		
-		return json;
+		node.put("componentID", ComponentID());
+		node.put("componentName", ComponentName());
+		node.put("spriteID", SpriteID);
+
+		return (JsonNode)node;
 	}
 
 	@Override
-	public void FromJSON(JSONObject data) 
+	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		SpriteID = data.getInt(SpriteIDKey);
-		Index = 0;
-		SuperDuration = 0.0f;
-		OverrideDuration = false;
+		SpriteID = jsonNode.path("spriteID").asInt();
 	}
 }

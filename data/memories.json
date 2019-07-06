@@ -1,0 +1,26 @@
+[ {
+  "uuidString" : "",
+  "entities" : [ {
+    "components" : [ {
+      "componentID" : 1,
+      "componentName" : "tag",
+      "componentData" : {
+        "type" : "player"
+      }
+    }, {
+      "componentID" : 2,
+      "componentName" : "position",
+      "componentData" : {
+        "tileX" : 2,
+        "tileY" : 4
+      }
+    }, {
+      "componentID" : 8,
+      "componentName" : "sprite",
+      "componentData" : {
+        "spriteID" : 1
+      }
+    } ]
+  } ],
+  "fileUUID" : "fc85515f-3d9c-42d3-8d06-0965b3f7082f"
+} ]

@@ -1,6 +1,26 @@
 package eng;
-import processing.data.*;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import def.Application;
 import usr.*;
 
@@ -14,39 +34,227 @@ public class FileManager
     public static final String CONFIG_PATH = "\\data\\config\\cfg.json";
     public static final String USER_DATA_FILES = "\\data\\users\\";
 
-    private FileManager() {}
+    public static ObjectMapper ObjMapper;
+    public static ObjectWriter ObjWriter;
+    
+    public static java.util.Date Time;
+    public static ArrayList<ObjectNode> Users;
+    public static ArrayList<ObjectNode> Memories;
+    
+    private FileManager() { }
 
+    public static void InitializeFileManager() 
+    {
+    	ObjMapper = new ObjectMapper();
+    	ObjWriter = ObjMapper.writer();  
+    	Time      = new java.util.Date();
+    	Users     = new ArrayList<ObjectNode>();
+    	Memories  = new ArrayList<ObjectNode>();
+    	
+    }
     ////////////////////////////////////////////////////////////
     ////////////----------------------------------//////////////
     ////////////Adds UserName to cfg.json         //////////////
     ////////////                                  //////////////
     ////////////////////////////////////////////////////////////
-
-    private static void AddUserToConfigFile(String name) 
+    
+    public static void LoadMemories() 
     {
-        name = name.toLowerCase();
+    	JsonNode memoriesRoot = null; 
+    	try 
+    	{
+			memoriesRoot = ObjMapper.readTree(PathFinder.FILE_MEMORIES.toFile());		
+			
+			Memories.clear();
+			
+			if(memoriesRoot.isArray()) 
+			{
+				for(JsonNode memory : memoriesRoot) 
+				{
+					Memories.add((ObjectNode)memory);
+				}
+			}
+		} 
+    	catch (JsonParseException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (JsonMappingException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}
+    }
+    
+    public static void LoadUsers() 
+    {
+    	JsonNode users = null; 
+    	try 
+    	{
+			users = ObjMapper.readTree(PathFinder.FILE_USERS.toFile());
+			Users.clear();
+    		for(JsonNode user : users) 
+    		{
+    			Users.add((ObjectNode)user);
+    		}
+		} 
+    	catch (JsonParseException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (JsonMappingException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}
+    }
+    
+    public static void AddNewUserToUsersFile(String userName, long timeCreated)
+    {    	
+    	ObjectNode user = ObjMapper.createObjectNode();
+    	
+    	user.put("userName", userName.toLowerCase());
+    	user.put("timeCreated", timeCreated);
+    	user.put("fileUUID", UUID.randomUUID().toString());
+    	
+    	try
+    	{
+    		 ObjectNode memory = (ObjectNode)ObjMapper.readTree(PathFinder.FILE_MEMORY_DEFAULT.toFile());
+			/// Crucial! 
+			memory.put("fileUUID", user.path("fileUUID").asText());	
 
-        JSONObject usersObject = Application.PROCESSING.loadJSONObject(CONFIG_PATH);
-        JSONArray userNames = usersObject.getJSONArray("USERS");
-        JSONArray array = new JSONArray();
-
-        int index = -1;
-        while ((index += 1) < (userNames.size())) 
-        {
-            array.setString(index, userNames.getString(index));
-        }
-        array.setString(index, name);
-
-        usersObject.setJSONArray("USERS", array);
-        Application.PROCESSING.saveJSONObject(usersObject, CONFIG_PATH);
+			WriteUserToMemory(user, memory);
+		} 
+    	catch (JsonParseException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (JsonMappingException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}
     }
 
+    public static void SaveMemories() 
+    {
+    	ArrayNode memories = ObjMapper.createArrayNode();
+    	
+    	for(JsonNode memory : Memories) 
+    	{
+    		memories.add(memory);
+    	}    	
+    	
+    	File memoriesFile = PathFinder.FILE_MEMORIES.toFile();
+    	
+    	if(ObjWriter == null)
+    	{
+    		ObjWriter = ObjMapper.writer();  
+    	}   	
+    	try 
+    	{
+    		ObjWriter.withDefaultPrettyPrinter().writeValue(memoriesFile, memories);
+		} 
+    	catch (JsonGenerationException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (JsonMappingException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}
+    }
+    
+    public static void SaveUsers() 
+    {
+    	ArrayNode users = FileManager.ObjMapper.createArrayNode();
+    	
+    	for(int i = 0; i < Users.size(); i += 1) 
+    	{
+    		users.add(Users.get(i));   		
+    	}
+    	
+    	File usersFile = PathFinder.FILE_USERS.toFile();
+    	 	
+    	try 
+    	{
+    		ObjWriter.withDefaultPrettyPrinter().writeValue(usersFile, users);
+		} 
+    	catch (JsonGenerationException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (JsonMappingException e) 
+    	{
+			e.printStackTrace();
+		} 
+    	catch (IOException e) 
+    	{
+			e.printStackTrace();
+		}
+    }
+    
+    private static void WriteUserToMemory(ObjectNode user, ObjectNode memory) 
+    {
+    	LoadUsers();
+    	LoadMemories();
+    	
+    	Users.add(user);
+    	Memories.add(memory);
+    	
+    	SaveUsers();
+    	SaveMemories();    
+    }
     ////////////////////////////////////////////////////////////
     ////////////----------------------------------//////////////
     ////////////Confirms UserName does not        //////////////
     ////////////already point to local folder     //////////////
     ////////////////////////////////////////////////////////////
 
+    public static JsonNode CreateUser(String userName, long timeCreated) 
+    {
+    	ObjectNode user = ObjMapper.createObjectNode();
+   
+    	user.put("userName", userName);
+    	user.put("timeCreated", timeCreated);
+    	
+    	return (JsonNode)user;
+    }
+    
+    private static JsonNode GetDefaultEntities() 
+    {
+        File defaultEntities = PathFinder.FILE_ENTITY_DEFAULT.toFile();
+        JsonNode node = null;
+		try 
+		{
+			node = ObjMapper.readTree(defaultEntities);
+		} 
+		catch (JsonProcessingException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return node;
+    }
+    
     public static boolean UserFolderExists(String name) 
     {
         String userPath = Application.PATH + USER_DATA_FILES + name.toLowerCase() + "\\";
@@ -66,52 +274,21 @@ public class FileManager
 
     private static boolean UserFilesExist(String userName) 
     {
-        String[] userPaths = UserPaths(userName);
+        Path[] userPaths = PathFinder.UserPaths(userName);
         for (int i = 0; i < userPaths.length; i += 1) 
         {
-            Path path = Paths.get(Application.PATH + userPaths[i]);
-            if (Files.exists(path) != true) 
+            if (Files.exists(userPaths[i]) != true) 
             {
-
+            	System.err.println(userPaths[i]);
                 return false;
             }
         }
         return true;
     }
 
-    ////////////////////////////////////////////////////////////
-    ////////////----------------------------------//////////////
-    ////////////Generate User Paths               //////////////
-    ////////////                                  //////////////
-    ////////////////////////////////////////////////////////////
 
-    private static String[] UserPaths(String userName) 
-    {
-        String name = userName.toLowerCase();
 
-        return new String[] 
-        {
-            USER_DATA_FILES + name + "\\" + FILENAME_MAPS,
-         // USER_DATA_FILES + userName + "\\" + FILENAME_WORLD,
-            USER_DATA_FILES + name + "\\" + FILENAME_ENTITIES,
-        };
-    }
 
-    ////////////////////////////////////////////////////////////
-    ////////////----------------------------------//////////////
-    ////////////Generate User Filenames           //////////////
-    ////////////                                  //////////////
-    ////////////////////////////////////////////////////////////
-
-    private static String[] UserFiles() 
-    {
-        return new String[] 
-        {
-            FILENAME_MAPS,
-         // FILENAME_WORLD,
-            FILENAME_ENTITIES,
-        };
-    }
 
     ////////////////////////////////////////////////////////////
     ////////////----------------------------------//////////////
@@ -121,38 +298,38 @@ public class FileManager
 
     public static void WriteSessionToFile(Session session)
     {
-        String userName = session.CurrentUserName();
-
-        if (UserFilesExist(userName) != true) 
-        {
-            System.err.println("error writing user file!");
-            Application.PROCESSING.exit();
-        }
-
-        String[] paths = UserPaths(userName);
-        String[] files = UserFiles();
-
-        JSONArray entitiesJSON = session.EntitiesToJSONArray();
-        JSONArray mapsJSON = session.MapsToJSONArray();
-
-        for (int i = 0; i < paths.length; i += 1) 
-        {
-            String path = paths[i];
-            switch (files[i]) 
-            {
-                case FILENAME_MAPS:
-                    Application.PROCESSING.saveJSONArray(mapsJSON, path);
-                    break;
-                    //        case FILENAME_WORLD:
-                    //        	Application.PROCESSING.saveJSONObject(worldJSON, path);
-                    //        break;
-                case FILENAME_ENTITIES:
-                    Application.PROCESSING.saveJSONArray(entitiesJSON, path);
-                    break;
-                default:
-                    break;
-            }
-        }
+//        String userName = session.CurrentUserName();
+//
+//        if (UserFilesExist(userName) != true) 
+//        {
+//            System.err.println("error writing user file!");
+//            Application.PROCESSING.exit();
+//        }
+//
+//        String[] paths = UserPaths(userName);
+//        String[] files = UserFiles();
+//
+//        JSONArray entitiesJSON = session.EntitiesToJSONArray();
+//        JSONArray mapsJSON = session.MapsToJSONArray();
+//
+//        for (int i = 0; i < paths.length; i += 1) 
+//        {
+//            String path = paths[i];
+//            switch (files[i]) 
+//            {
+//                case FILENAME_MAPS:
+//                    Application.PROCESSING.saveJSONArray(mapsJSON, path);
+//                    break;
+//                    //        case FILENAME_WORLD:
+//                    //        	Application.PROCESSING.saveJSONObject(worldJSON, path);
+//                    //        break;
+//                case FILENAME_ENTITIES:
+//                    Application.PROCESSING.saveJSONArray(entitiesJSON, path);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
     }
 
     ////////////////////////////////////////////////////////////
@@ -163,39 +340,39 @@ public class FileManager
 
     public static Session ReadSessionFromFile(String userName)
     {
-        if (UserFilesExist(userName) != true) 
-        {
-            System.err.println("error reading user file!");
-            Application.PROCESSING.exit();
-        }
+//        if (UserFilesExist(userName) != true) 
+//        {
+//            System.err.println("error reading user file!");
+//            Application.PROCESSING.exit();
+//        }
 
-        Session session;
+        Session session = null;
 
-        String[] paths = UserPaths(userName);
-        String[] files = UserFiles();
-
-        JSONArray mapsJSON = new JSONArray();
-        // JSONObject worldJSON  = new JSONObject();
-        JSONArray entitiesJSON = new JSONArray();
-
-        for (int i = 0; i < paths.length; i += 1) 
-        {
-            String path = paths[i];
-            switch (files[i]) 
-            {
-                case FILENAME_MAPS:
-                    mapsJSON = Application.PROCESSING.loadJSONArray(path);
-                    break;
-                    //      case FILENAME_WORLD:
-                    //      	worldJSON = Application.PROCESSING.loadJSONObject(path);
-                    //      break;
-                case FILENAME_ENTITIES:
-                    entitiesJSON = Application.PROCESSING.loadJSONArray(path);
-                    break;
-            }
-        }
-
-        session = new Session(userName, mapsJSON, entitiesJSON);
+//        String[] paths = UserPaths(userName);
+//        String[] files = UserFiles();
+//
+//        JSONArray mapsJSON = new JSONArray();
+//        // JSONObject worldJSON  = new JSONObject();
+//        JSONArray entitiesJSON = new JSONArray();
+//
+//        for (int i = 0; i < paths.length; i += 1) 
+//        {
+//            String path = paths[i];
+//            switch (files[i]) 
+//            {
+//                case FILENAME_MAPS:
+//                    mapsJSON = Application.PROCESSING.loadJSONArray(path);
+//                    break;
+//                    //      case FILENAME_WORLD:
+//                    //      	worldJSON = Application.PROCESSING.loadJSONObject(path);
+//                    //      break;
+//                case FILENAME_ENTITIES:
+//                    entitiesJSON = Application.PROCESSING.loadJSONArray(path);
+//                    break;
+//            }
+//        }
+//
+//        session = new Session(userName, mapsJSON, entitiesJSON);
 
         return session;
     }
@@ -212,20 +389,20 @@ public class FileManager
 
         int success = 0;
 
-        if (UserFolderExists(name) == false) 
-        {
-            success = 1;
-
-            JSONArray maps = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_MAPS);
-            //JSONObject world   = Application.PROCESSING.loadJSONObject(CONFIG_JSON_PATH + FILENAME_WORLD);
-            JSONArray entities = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_ENTITIES);
-
-            Application.PROCESSING.saveJSONArray(maps, USER_DATA_FILES + name + "\\" + FILENAME_MAPS);
-            //Application.PROCESSING.saveJSONObject(world,   USER_DATA_FILES + name + "\\"  + FILENAME_WORLD);
-            Application.PROCESSING.saveJSONArray(entities, USER_DATA_FILES + name + "\\" + FILENAME_ENTITIES);
-
-            AddUserToConfigFile(name);
-        }
+//        if (UserFolderExists(name) == false) 
+//        {
+//            success = 1;
+//
+//            JSONArray maps = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_MAPS);
+//            //JSONObject world   = Application.PROCESSING.loadJSONObject(CONFIG_JSON_PATH + FILENAME_WORLD);
+//            JSONArray entities = Application.PROCESSING.loadJSONArray(CONFIG_JSON_PATH + FILENAME_ENTITIES);
+//
+//            Application.PROCESSING.saveJSONArray(maps, USER_DATA_FILES + name + "\\" + FILENAME_MAPS);
+//            //Application.PROCESSING.saveJSONObject(world,   USER_DATA_FILES + name + "\\"  + FILENAME_WORLD);
+//            Application.PROCESSING.saveJSONArray(entities, USER_DATA_FILES + name + "\\" + FILENAME_ENTITIES);
+//
+//            AddUserToConfigFile(name);
+//        }
         return success;
     }
 }

@@ -1,41 +1,35 @@
 package components;
 
-import ecs.Components;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import processing.data.JSONObject;
+import ecs.Components;
+import eng.FileManager;
 
 public class Tag extends Components
 {
-	public String _type;
+	public String Type;
 	
 	public Tag() 
 	{
-		super(Components.Tag);
-	}
-	
-	public String Type() 
-	{
-		return _type;
+		super(Components.Tag, "tag");
 	}
 	
 	@Override
-	public JSONObject ToJSON() 
+	public JsonNode ToJsonNode() 
 	{
-		JSONObject json = new JSONObject();
-		JSONObject data = new JSONObject();
+		ObjectNode node = FileManager.ObjMapper.createObjectNode();
 		
-		data.setString("TYPE", _type);
+		node.put("componentID", ComponentID());
+		node.put("componentName", ComponentName());
+		node.put("type", Type);
 		
-		json.setString("NAME", Components.Name_Tag);
-		json.setLong(Components.ComponentIDKey, ComponentID());
-		json.setJSONObject("DATA", data);
-		
-		return json;
+		return (JsonNode)node;
 	}
 
 	@Override
-	public void FromJSON(JSONObject data) 
+	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		_type = data.getString("TYPE");
-	}	
+		Type = jsonNode.path("tag").asText();
+	}
 }

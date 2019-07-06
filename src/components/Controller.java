@@ -1,42 +1,39 @@
 package components;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import ecs.Components;
-import processing.data.JSONObject;
+import eng.FileManager;
 
 public class Controller extends Components
-{
-	private static final String FacingKey = "FACING".toUpperCase();
-	
+{	
 	public static final long Up    = 1 << 0, 
 							 Down  = 1 << 1, 
 							 Left  = 1 << 2, 
 							 Right = 1 << 3;
-	Long Facing;
+	public Long Facing;
 	
 	public Controller() 
 	{
-		super(Components.Controller);
+		super(Components.Controller, "controller");
 	}
 
 	@Override
-	public void FromJSON(JSONObject data) 
+	public JsonNode ToJsonNode() 
 	{
-		Facing = data.getLong(FacingKey);
+		ObjectNode node = FileManager.ObjMapper.createObjectNode();
+		
+		node.put("componentID", ComponentID());
+		node.put("componentName", ComponentName());
+		node.put("facing", Facing);
+		
+		return (JsonNode)node;
 	}
 
 	@Override
-	public JSONObject ToJSON() 
+	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		JSONObject json = new JSONObject();
-		JSONObject data = new JSONObject();
-		
-		data.setLong(FacingKey, Facing);
-		
-		json.setString("NAME", Components.Name_Sprite);
-		json.setLong(Components.ComponentIDKey, ComponentID());
-		json.setJSONObject("DATA", data);
-		
-		return json;
+		Facing = jsonNode.path("facing").asLong();
 	}
-
 }

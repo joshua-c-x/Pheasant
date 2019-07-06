@@ -1,4 +1,4 @@
-package res;
+package vis;
 import processing.core.PImage;
 
 public class SpriteSheet 

@@ -85,8 +85,8 @@ public final class Parameters
 	/////////////////////////////////////////////
 	/////////////////////////////////////////////
 	
-	public static final String TagType_Player     = "PLAYER";
-	public static final String TagType_GameObject = "GAMEOBJECT";
-	public static final String TagType_Actor      = "ACTOR";
+	public static final String TagType_Player     = "player";
+	public static final String TagType_GameObject = "gameobject";
+	public static final String TagType_Actor      = "actor";
 	
 }
