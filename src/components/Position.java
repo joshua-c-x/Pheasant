@@ -30,7 +30,7 @@ public class Position extends Components
 	@Override
 	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		TileX = jsonNode.path("tileX").asInt();
-		TileY = jsonNode.path("tileY").asInt();
+		TileX = jsonNode.path("componentData").path("tileX").asInt();
+		TileY = jsonNode.path("componentData").path("tileY").asInt();
 	}
 }

@@ -35,6 +35,6 @@ public class Sprite extends Components
 	@Override
 	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		SpriteID = jsonNode.path("spriteID").asInt();
+		SpriteID = jsonNode.path("componentData").path("spriteID").asInt();
 	}
 }

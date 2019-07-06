@@ -1,5 +1,4 @@
 [ {
-  "uuidString" : "",
   "entities" : [ {
     "components" : [ {
       "componentID" : 1,
@@ -22,5 +21,5 @@
       }
     } ]
   } ],
-  "fileUUID" : "f95a142f-37ef-439c-8578-72c9c3915dea"
+  "fileUUID" : "d3087e96-0988-4af7-9516-16ee59b77711"
 } ]

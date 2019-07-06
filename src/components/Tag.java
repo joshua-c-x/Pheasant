@@ -30,6 +30,7 @@ public class Tag extends Components
 	@Override
 	public void FromJsonNode(JsonNode jsonNode) 
 	{
-		Type = jsonNode.path("tag").asText();
+		String type = jsonNode.path("componentData").path("type").asText();
+		Type = type;
 	}
 }

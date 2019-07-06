@@ -198,7 +198,8 @@ public class EntityContainer {
 
         _tmpUniqueIDs = new UUID[next];
 
-        for (i = 0; i < _uniqueIDs.length; i += 1) {
+        for (i = 0; i < _uniqueIDs.length; i += 1) 
+        {
             _tmpUniqueIDs[i] = _uniqueIDs[i];
         }
 
@@ -212,7 +213,8 @@ public class EntityContainer {
 
         Tag[] tempTags = new Tag[next];
 
-        for (i = 0; i < Tags.length; i += 1) {
+        for (i = 0; i < Tags.length; i += 1) 
+        {
             tempTags[i] = Tags[i];
         }
 
@@ -222,7 +224,8 @@ public class EntityContainer {
 
         Position[] tempWorldPositions = new Position[next];
 
-        for (i = 0; i < WorldPositions.length; i += 1) {
+        for (i = 0; i < WorldPositions.length; i += 1) 
+        {
             tempWorldPositions[i] = WorldPositions[i];
         }
 
@@ -232,7 +235,8 @@ public class EntityContainer {
 
         Sprite[] tempSpriteIDs = new Sprite[next];
 
-        for (i = 0; i < SpriteIDs.length; i += 1) {
+        for (i = 0; i < SpriteIDs.length; i += 1) 
+        {
             tempSpriteIDs[i] = SpriteIDs[i];
         }
 

@@ -34,6 +34,7 @@ public class Controller extends Components
 	@Override
 	public void FromJsonNode(JsonNode jsonNode) 
 	{
+		//TODO path is not correct
 		Facing = jsonNode.path("facing").asLong();
 	}
 }

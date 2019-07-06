@@ -8,15 +8,11 @@ import processing.data.JSONArray;
 
 public class Session 
 {
-  private String _currentUserName;
   private World  _world;
   
-  public Session(String userName, JSONArray maps, JsonNode entityContainerJsonNode) 
-  {
-     _currentUserName = userName;
-     
+  public Session(JsonNode entityContainerJsonNode) 
+  {     
      _world = new World();     
-     _world.LoadMapsFromJSONArray(maps);
      _world.LoadEntityContainer(entityContainerJsonNode);
   }
   
@@ -29,23 +25,6 @@ public class Session
   public void Update(IO io, float delta) 
   {
     _world.Update(io,delta);
-  }
-
-
-  public String CurrentUserName() 
-  {
-	return _currentUserName;  
-  }
-  
-  ////////////////////////////////////////////////////////////
-  ////////////----------------------------------//////////////
-  ////////////Get Maps as JSON Array            //////////////
-  ////////////__________________________________//////////////
-  ////////////////////////////////////////////////////////////
-  
-  public JSONArray MapsToJSONArray() 
-  {
-    return _world.GetMapsToJSONArray();
   }
   
   ////////////////////////////////////////////////////////////

@@ -9,10 +9,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import def.Application;
 import msg.*;
 import usr.*;
+import vis.Assets;
 
 public class Engine
 {     
@@ -54,8 +56,7 @@ public class Engine
       
       if(_io.KeysJustPressed.get("CONTROL") == true) 
       {
-        FileManager.WriteSessionToFile(SessionManager.ActiveSession);
-        System.err.println("game saved.");
+        
       }
     }
   }
@@ -114,6 +115,7 @@ public class Engine
     _fileBlock = false;
     _timer     = Application.PROCESSING.millis();
     
+    Assets.LoadSprites();
     FileManager.InitializeFileManager();
     
     WriteDefaults();
@@ -121,17 +123,31 @@ public class Engine
     String userName = "example";
     long timeCreated = FileManager.Time.getTime();
     FileManager.AddNewUserToUsersFile(userName, timeCreated);
-    
-    if(true) 
-    {     
-    	Application.PROCESSING.exit();
-    }
   
-	//    Session session = FileManager.ReadSessionFromFile(userName);
-	//    
-	//    SessionManager.LoadSession(session);
-	//    
-	//    _initialized = true;
+    Session session = null;
+    		
+    if(FileManager.Users.size() > 0) 
+    {
+    	ObjectNode user = FileManager.Users.get(0);
+    	
+    	String userFileUUID, memoryFileUUID;
+    	
+    	for(ObjectNode memory : FileManager.Memories) 
+    	{
+    		userFileUUID = user.path("fileUUID").asText();
+    		memoryFileUUID = memory.findPath("fileUUID").asText();
+    		
+    		if(userFileUUID.equals(memoryFileUUID)) 
+    		{
+    			JsonNode entityContainerJsonNode = memory.path("entities");
+    			session = new Session(entityContainerJsonNode);
+    		}
+    	}
+    }  
+    
+  SessionManager.LoadSession(session);  
+  _initialized = true;
+  
   }
   
   public boolean IsInitialized() 
