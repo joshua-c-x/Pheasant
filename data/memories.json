@@ -21,5 +21,77 @@
       }
     } ]
   } ],
-  "fileUUID" : "d3087e96-0988-4af7-9516-16ee59b77711"
+  "fileUUID" : "2c751756-eb8b-463c-a652-ebe8e31878bb"
+}, {
+  "entities" : [ {
+    "components" : [ {
+      "componentID" : 1,
+      "componentName" : "tag",
+      "componentData" : {
+        "type" : "player"
+      }
+    }, {
+      "componentID" : 2,
+      "componentName" : "position",
+      "componentData" : {
+        "tileX" : 2,
+        "tileY" : 4
+      }
+    }, {
+      "componentID" : 8,
+      "componentName" : "sprite",
+      "componentData" : {
+        "spriteID" : 1
+      }
+    } ]
+  } ],
+  "fileUUID" : "5fed7ff9-0d66-41e3-92a6-e3983a687f82"
+}, {
+  "entities" : [ {
+    "components" : [ {
+      "componentID" : 1,
+      "componentName" : "tag",
+      "componentData" : {
+        "type" : "player"
+      }
+    }, {
+      "componentID" : 2,
+      "componentName" : "position",
+      "componentData" : {
+        "tileX" : 2,
+        "tileY" : 4
+      }
+    }, {
+      "componentID" : 8,
+      "componentName" : "sprite",
+      "componentData" : {
+        "spriteID" : 1
+      }
+    } ]
+  } ],
+  "fileUUID" : "dc6d62fc-ac46-4e21-91c8-7f11c2e2e704"
+}, {
+  "entities" : [ {
+    "components" : [ {
+      "componentID" : 1,
+      "componentName" : "tag",
+      "componentData" : {
+        "type" : "player"
+      }
+    }, {
+      "componentID" : 2,
+      "componentName" : "position",
+      "componentData" : {
+        "tileX" : 2,
+        "tileY" : 4
+      }
+    }, {
+      "componentID" : 8,
+      "componentName" : "sprite",
+      "componentData" : {
+        "spriteID" : 1
+      }
+    } ]
+  } ],
+  "fileUUID" : "9b826f1d-cc5b-4ae3-99db-bbe388e8c307"
 } ]

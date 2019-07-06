@@ -1,6 +1,8 @@
 package eng;
 import processing.core.PApplet;
 
+import ctx.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,48 +19,51 @@ import usr.*;
 import vis.Assets;
 
 public class Engine
-{     
+{ 
+  private static int _contextResponse;
   private float _timer, _delta;  
-  private boolean _initialized, _fileBlock;
+  private boolean _initialized;
   IO _io;
   
-
+  private static Context _mainMenu, _load, _create, _exit, _play;
+  private static Context _currentContext;
+  
   public Engine() 
   {
     _initialized = false; 
+    
+    _mainMenu    = new MainMenu();
+    _load        = new Load();
+    _create      = new Create();
+    _exit        = new Exit();
+    _play        = new Play();
   }
   
-  public void Update() 
+  public void Run() 
   {
+	if(_initialized != true) 
+	{
+		return;
+	} 
+	
     Application.PROCESSING.background(255);
     
+    _delta = PApplet.abs(Application.PROCESSING.millis() - _timer);
+    _timer = Application.PROCESSING.millis();   
     _io.Update();
+    
+  
+    
+    IO io = new IO(_io);
+    
+    _contextResponse = _currentContext.Update(io, _delta);
+    _currentContext.DrawContext(_delta);
     
     // for debugging
     SendInputToConsole();
     
-    if(_fileBlock == true) 
-    {
-      return;
-    }
-    
-    if(SessionManager.ActiveSessionExists()) 
-    {          
-      IO io = new IO(_io);
-      
-      _delta = PApplet.abs(Application.PROCESSING.millis() - _timer);
-      _timer = Application.PROCESSING.millis();
-      
-      SessionManager.ActiveSession.Update(io,_delta);
-      
-      // gc
-      io = null;
-      
-      if(_io.KeysJustPressed.get("CONTROL") == true) 
-      {
-        
-      }
-    }
+    // gc
+    io = null;
   }
   
   public void WriteDefaults() 
@@ -112,7 +117,6 @@ public class Engine
   public void Initialize() 
   {
     _io        = new IO();
-    _fileBlock = false;
     _timer     = Application.PROCESSING.millis();
     
     Assets.LoadSprites();
@@ -120,34 +124,50 @@ public class Engine
     
     WriteDefaults();
     
-    String userName = "example";
-    long timeCreated = FileManager.Time.getTime();
-    FileManager.AddNewUserToUsersFile(userName, timeCreated);
-  
-    Session session = null;
-    		
-    if(FileManager.Users.size() > 0) 
-    {
-    	ObjectNode user = FileManager.Users.get(0);
-    	
-    	String userFileUUID, memoryFileUUID;
-    	
-    	for(ObjectNode memory : FileManager.Memories) 
-    	{
-    		userFileUUID = user.path("fileUUID").asText();
-    		memoryFileUUID = memory.findPath("fileUUID").asText();
-    		
-    		if(userFileUUID.equals(memoryFileUUID)) 
-    		{
-    			JsonNode entityContainerJsonNode = memory.path("entities");
-    			session = new Session(entityContainerJsonNode);
-    		}
-    	}
-    }  
+    _mainMenu.Open();
+    _currentContext = _mainMenu;
     
-  SessionManager.LoadSession(session);  
-  _initialized = true;
-  
+    // create a user for testing
+    
+    String userName;
+    long timeCreated;
+    
+    userName = "joshua";
+    timeCreated = FileManager.Time.getTime();
+    FileManager.AddNewUserToUsersFile(userName, timeCreated);
+    
+    userName = "luke";
+    timeCreated = FileManager.Time.getTime();
+    FileManager.AddNewUserToUsersFile(userName, timeCreated);
+    
+    userName = "jared";
+    timeCreated = FileManager.Time.getTime();
+    FileManager.AddNewUserToUsersFile(userName, timeCreated);
+    
+    userName = "erin";
+    timeCreated = FileManager.Time.getTime();
+    FileManager.AddNewUserToUsersFile(userName, timeCreated);
+    
+    _initialized = true;
+    
+//    if(FileManager.Users.size() > 0) 
+//    {
+//    	ObjectNode user = FileManager.Users.get(0);
+//    	
+//    	String userFileUUID, memoryFileUUID;
+//    	
+//    	for(ObjectNode memory : FileManager.Memories) 
+//    	{
+//    		userFileUUID = user.path("fileUUID").asText();
+//    		memoryFileUUID = memory.findPath("fileUUID").asText();
+//    		
+//    		if(userFileUUID.equals(memoryFileUUID)) 
+//    		{
+//    			JsonNode entityContainerJsonNode = memory.path("entities");
+//    		}
+//    	}
+//    }     
+//    
   }
   
   public boolean IsInitialized() 

@@ -46,7 +46,7 @@ public class Application extends PApplet
 	@Override
 	public void draw()
 	{
-		ENGINE.Update();
+		ENGINE.Run();
 	}
 
 	////////////////////////////////////////////////////////////////

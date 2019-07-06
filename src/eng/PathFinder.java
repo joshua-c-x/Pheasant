@@ -14,6 +14,7 @@ public class PathFinder
 	public static String FILENAME_DEFAULT_MEMORY = "def_memory.json";
 	public static String FILENAME_MEMORIES       = "memories.json";
 	public static String FILENAME_USERS          = "users.json";
+	public static String FILENAME_FONT0          = "ibmps2thin4.ttf";
 	
 	public static Path DIRECTORY;
 	public static Path DIRECTORY_DATA;
@@ -21,6 +22,7 @@ public class PathFinder
 	public static Path DIRECTORY_DATA_FONTS;
 	public static Path DIRECTORY_DATA_GRAPHICS;
 
+	public static Path FILE_FONT0;
 	public static Path FILE_USERS;
 	public static Path FILE_MEMORIES;
 	public static Path FILE_MEMORY_DEFAULT;
@@ -36,26 +38,43 @@ public class PathFinder
 		
 		DIRECTORY = java.nio.file.Paths.get(_appDir);
 		DIRECTORY_DATA = java.nio.file.Paths.get(_appDir, "data");
-		DIRECTORY_DATA_CONFIG = java.nio.file.Paths.get(_appDir,"data", "config");
-		DIRECTORY_DATA_FONTS = java.nio.file.Paths.get(_appDir,"data", "fonts");
+		DIRECTORY_DATA_CONFIG = java.nio.file.Paths.get(_appDir, "data", "config");
+		DIRECTORY_DATA_FONTS = java.nio.file.Paths.get(_appDir, "data", "fonts");
+		
+		_pathBuffer = DIRECTORY_DATA_FONTS + File.separator + FILENAME_FONT0;
+		FILE_FONT0 = java.nio.file.Paths.get(_pathBuffer);
+		
+		//
 		
 		_pathBuffer = DIRECTORY_DATA + File.separator + FILENAME_USERS;
 		FILE_USERS = java.nio.file.Paths.get(_pathBuffer);
 		
+		//
+		
 		_pathBuffer = DIRECTORY_DATA + File.separator + FILENAME_MEMORIES;
 		FILE_MEMORIES = java.nio.file.Paths.get(_pathBuffer);
+		
+		//
 		
 		_pathBuffer = DIRECTORY_DATA_CONFIG + File.separator + FILENAME_DEFAULT_MEMORY;
 		FILE_MEMORY_DEFAULT = java.nio.file.Paths.get(_pathBuffer);
 		
+		//
+		
 		_pathBuffer = DIRECTORY_DATA_CONFIG + File.separator + FILENAME_DEFAULT_WORLD;
 		FILE_WORLD_DEFAULT = java.nio.file.Paths.get(_pathBuffer);
+		
+		//
 		
 		_pathBuffer = DIRECTORY_DATA_CONFIG + File.separator + FILENAME_DEFAULT_ENTITY;
 		FILE_ENTITY_DEFAULT = java.nio.file.Paths.get(_pathBuffer);
 		
+		//
+		
 		_pathBuffer = DIRECTORY_DATA_CONFIG + File.separator + FILENAME_DEFAULT_MAPS;
 		FILE_MAPS_DEFAULT = java.nio.file.Paths.get(_pathBuffer);
+		
+		//
 		
 		_pathBuffer = null;
 	}

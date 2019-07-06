@@ -4,10 +4,13 @@ import processing.core.*;
 
 import java.util.HashMap;
 import def.Application;
+import eng.PathFinder;
 
 public class Assets 
 { 
   private static float Player_Walk_Speed = 700.0f;
+  
+  public static final int Fonts_Font0 = 0;
   
   /////////////////////////////////////////////
   ////// Sprite IDs                     ///////
@@ -29,14 +32,17 @@ public class Assets
   public static final String AnimationName_WalkDown  = "walkdown";
   public static final String AnimationName_WalkLeft  = "walkleft";
   public static final String AnimationName_WalkRight = "walkright";
-  
+
   public static final String SpriteSheet_Player_Path    = "\\data\\graphics\\actors\\player\\player_spritesheet.png";
   public static final int SpriteSheet_Player_Columns = 4;
   public static final int SpriteSheet_Player_Rows    = 3;
   
+  
+  public static HashMap<Integer, PFont> Fonts;
   public static HashMap<Integer, SpriteSheet> SpriteSheets; 
   public static HashMap<Integer, AnimationLibrary> AnimationLibraries;
   
+  private static PFont _fontBuffer;
   private static PImage _imageBuffer;
   private static SpriteSheet _spriteSheetBuffer;
   private static AnimationLibrary _animationLibraryBuffer;
@@ -46,8 +52,12 @@ public class Assets
   
   public static void LoadSprites() 
   {
+	Fonts = new HashMap<Integer, PFont>();
     SpriteSheets = new HashMap<Integer, SpriteSheet>();
     AnimationLibraries = new HashMap<Integer, AnimationLibrary>();
+    
+    _fontBuffer = Application.PROCESSING.createFont(PathFinder.FILE_FONT0.toString(), 16);
+    Fonts.put(Fonts_Font0, _fontBuffer);
     
     ///////////////////////////////////////////////
     ////////.--------------------./////////////////
@@ -71,6 +81,14 @@ public class Assets
     
     SpriteSheets.put(SpriteID_Player, _spriteSheetBuffer);
     AnimationLibraries.put(SpriteID_Player, _animationLibraryBuffer);
+    
+    // gc buffers
+    
+    _fontBuffer             = null;
+    _imageBuffer            = null;
+    _spriteSheetBuffer      = null;
+    _animationLibraryBuffer = null;
+   	_animationsBuffer       = null;
   }
 }
 
