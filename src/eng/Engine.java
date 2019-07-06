@@ -63,8 +63,7 @@ public class Engine
   public void WriteDefaults() 
   {	
 	  String json = "[]";
-	  JsonNode jsonNode = null;
-	  
+	  JsonNode jsonNode = null;  
 	  try 
 	  {
 		jsonNode = FileManager.ObjMapper.readTree(json);
@@ -119,7 +118,7 @@ public class Engine
     
     WriteDefaults();
     
-    String userName = "luke";
+    String userName = "example";
     long timeCreated = FileManager.Time.getTime();
     FileManager.AddNewUserToUsersFile(userName, timeCreated);
     
@@ -127,20 +126,12 @@ public class Engine
     {     
     	Application.PROCESSING.exit();
     }
-//    if(FileManager.CreateUserFiles(userName) == 1) 
-//    {
-//    	System.err.println("successfully created new user.");
-//    }
-//    else 
-//    {
-//    	System.err.println("failed to create new user.");
-//    }
-//    
-//    Session session = FileManager.ReadSessionFromFile(userName);
-//    
-//    SessionManager.LoadSession(session);
-//    
-//    _initialized = true;
+  
+	//    Session session = FileManager.ReadSessionFromFile(userName);
+	//    
+	//    SessionManager.LoadSession(session);
+	//    
+	//    _initialized = true;
   }
   
   public boolean IsInitialized() 

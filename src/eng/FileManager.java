@@ -26,14 +26,6 @@ import usr.*;
 
 public class FileManager
 {
-    public static final String FILENAME_MAPS = "maps.json";
-    public static final String FILENAME_WORLD = "world.json";
-    public static final String FILENAME_ENTITIES = "entities.json";
-
-    public static final String CONFIG_JSON_PATH = "\\data\\config\\json\\";
-    public static final String CONFIG_PATH = "\\data\\config\\cfg.json";
-    public static final String USER_DATA_FILES = "\\data\\users\\";
-
     public static ObjectMapper ObjMapper;
     public static ObjectWriter ObjWriter;
     
@@ -52,11 +44,6 @@ public class FileManager
     	Memories  = new ArrayList<ObjectNode>();
     	
     }
-    ////////////////////////////////////////////////////////////
-    ////////////----------------------------------//////////////
-    ////////////Adds UserName to cfg.json         //////////////
-    ////////////                                  //////////////
-    ////////////////////////////////////////////////////////////
     
     public static void LoadMemories() 
     {
@@ -218,77 +205,6 @@ public class FileManager
     	SaveUsers();
     	SaveMemories();    
     }
-    ////////////////////////////////////////////////////////////
-    ////////////----------------------------------//////////////
-    ////////////Confirms UserName does not        //////////////
-    ////////////already point to local folder     //////////////
-    ////////////////////////////////////////////////////////////
-
-    public static JsonNode CreateUser(String userName, long timeCreated) 
-    {
-    	ObjectNode user = ObjMapper.createObjectNode();
-   
-    	user.put("userName", userName);
-    	user.put("timeCreated", timeCreated);
-    	
-    	return (JsonNode)user;
-    }
-    
-    private static JsonNode GetDefaultEntities() 
-    {
-        File defaultEntities = PathFinder.FILE_ENTITY_DEFAULT.toFile();
-        JsonNode node = null;
-		try 
-		{
-			node = ObjMapper.readTree(defaultEntities);
-		} 
-		catch (JsonProcessingException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	return node;
-    }
-    
-    public static boolean UserFolderExists(String name) 
-    {
-        String userPath = Application.PATH + USER_DATA_FILES + name.toLowerCase() + "\\";
-        Path path = Paths.get(userPath);
-        if (Files.exists(path)) 
-        {
-            return true;
-        }
-        return false;
-    }
-
-    ////////////////////////////////////////////////////////////
-    ////////////----------------------------------//////////////
-    ////////////Confirms UserName does not        //////////////
-    ////////////already point to local files      //////////////
-    ////////////////////////////////////////////////////////////
-
-    private static boolean UserFilesExist(String userName) 
-    {
-        Path[] userPaths = PathFinder.UserPaths(userName);
-        for (int i = 0; i < userPaths.length; i += 1) 
-        {
-            if (Files.exists(userPaths[i]) != true) 
-            {
-            	System.err.println(userPaths[i]);
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-
-
 
     ////////////////////////////////////////////////////////////
     ////////////----------------------------------//////////////
