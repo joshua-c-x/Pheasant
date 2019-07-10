@@ -57,6 +57,8 @@ public class MainMenu extends Context
 	@Override
 	public int DrawContext(float delta) 
 	{
+		Application.PROCESSING.image(Assets.Images.get("mainbg"),0,0);
+		
 		int index = 0;
 		if(_lines.size() > 0) 
 		{
@@ -64,7 +66,7 @@ public class MainMenu extends Context
 			{
 				Application.PROCESSING.textFont(Assets.Fonts.get(Assets.Fonts_Font0));
 				Application.PROCESSING.fill(0);
-				Application.PROCESSING.text(line, Application.PROCESSING.width / 2, Application.PROCESSING.height / 2 + (index * 16));
+				Application.PROCESSING.text(line, Application.PROCESSING.width / 2, (Application.PROCESSING.height / 2) - 50f + (index * 16));
 				index += 1;
 			}
 			

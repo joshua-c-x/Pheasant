@@ -40,6 +40,7 @@ public class PathFinder
 		DIRECTORY_DATA = java.nio.file.Paths.get(_appDir, "data");
 		DIRECTORY_DATA_CONFIG = java.nio.file.Paths.get(_appDir, "data", "config");
 		DIRECTORY_DATA_FONTS = java.nio.file.Paths.get(_appDir, "data", "fonts");
+		DIRECTORY_DATA_GRAPHICS = java.nio.file.Paths.get(_appDir, "data", "graphics");
 		
 		_pathBuffer = DIRECTORY_DATA_FONTS + File.separator + FILENAME_FONT0;
 		FILE_FONT0 = java.nio.file.Paths.get(_pathBuffer);

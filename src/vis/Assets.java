@@ -2,7 +2,13 @@
 package vis;
 import processing.core.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 import def.Application;
 import eng.PathFinder;
 
@@ -38,10 +44,13 @@ public class Assets
   public static final int SpriteSheet_Player_Rows    = 3;
   
   
+  public static HashMap<String, PImage> Images;
   public static HashMap<Integer, PFont> Fonts;
   public static HashMap<Integer, SpriteSheet> SpriteSheets; 
   public static HashMap<Integer, AnimationLibrary> AnimationLibraries;
   
+  private static InputStream _stream;
+  private static ImageIcon _iconBuffer;
   private static PFont _fontBuffer;
   private static PImage _imageBuffer;
   private static SpriteSheet _spriteSheetBuffer;
@@ -52,9 +61,22 @@ public class Assets
   
   public static void LoadSprites() 
   {
+	Images = new HashMap<String,PImage>();
 	Fonts = new HashMap<Integer, PFont>();
     SpriteSheets = new HashMap<Integer, SpriteSheet>();
     AnimationLibraries = new HashMap<Integer, AnimationLibrary>();
+    
+    _stream = Application.class.getResourceAsStream("/resources/background.png");
+    
+    try 
+    {
+    	_iconBuffer = new ImageIcon(ImageIO.read(_stream));
+    	Images.put("mainbg", new PImage(_iconBuffer.getImage()));
+	} 
+    catch (IOException e) 
+    {
+		e.printStackTrace();
+	}
     
     _fontBuffer = Application.PROCESSING.createFont(PathFinder.FILE_FONT0.toString(), 16);
     Fonts.put(Fonts_Font0, _fontBuffer);

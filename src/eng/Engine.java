@@ -27,11 +27,17 @@ public class Engine
   
   private static Context _mainMenu, _load, _create, _exit, _play;
   private static Context _currentContext;
+  private boolean _love = false;
   
   public Engine() 
   {
     _initialized = false; 
     
+    this._love = 
+    this._love == !this._love 
+    ? this._love : !this._love;
+    
+
     _mainMenu    = new MainMenu();
     _load        = new Load();
     _create      = new Create();
@@ -114,6 +120,12 @@ public class Engine
 		}
   }
   
+  public void BeginContext(Context context) 
+  {
+	context.Open();
+	_currentContext = context;
+  }
+  
   public void Initialize() 
   {
     _io        = new IO();
@@ -124,8 +136,7 @@ public class Engine
     
     WriteDefaults();
     
-    _mainMenu.Open();
-    _currentContext = _mainMenu;
+    BeginContext(_mainMenu);
     
     // create a user for testing
     
